@@ -1,0 +1,56 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="wss_test_list">
+      <field name="name">wss list</field>
+      <field name="model">wss.test</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="age"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="wss_test_form">
+      <field name="name">wss form</field>
+      <field name="model">wss.test</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+<!--            <header>-->
+<!--              <button name="get_data_from_api" type="object" string="test" class="oe_highlight"/>-->
+<!--            </header>-->
+            <group>
+              <field name="name"/>
+              <field name="age"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="wss_test.action_window">
+      <field name="name">wss window</field>
+      <field name="res_model">wss.test</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+
+    <menuitem name="wss" id="wss_test.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Menu 1" id="wss_test.menu_1" parent="wss_test.menu_root"/>
+
+    <menuitem name="List" id="wss_test.menu_1_list" parent="wss_test.menu_1"
+              action="wss_test.action_window"/>
+
+  </data>
+</odoo>

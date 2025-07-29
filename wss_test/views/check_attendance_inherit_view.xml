@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_check_attendance_form_inherit" model="ir.ui.view">
+        <field name="name">check.attendance.form.inherit</field>
+        <field name="model">check.attendance</field>
+        <field name="inherit_id" ref="check_attendance.check_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="WebSocket Communication">
+                    <field name="websocket_client_id"/>
+                    <field name="sender_id"/>
+                    <button
+                        name="action_send_via_websocket"
+                        type="object"
+                        string="Send via WebSocket"
+                        class="btn-primary"
+                        attrs="{'invisible': [('websocket_client_id', '=', False)]}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

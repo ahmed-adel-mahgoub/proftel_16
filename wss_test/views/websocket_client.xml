@@ -1,0 +1,48 @@
+<odoo>
+  <data>
+    <record id="web_client_id_tree_view" model="ir.ui.view">
+      <field name="name">web_client tree view</field>
+      <field name="model">websocket.clients</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="client_id"/>
+
+        </tree>
+      </field>
+    </record>
+    <record id="web_client_form_view" model="ir.ui.view">
+      <field name="name">web_client form view</field>
+      <field name="model">websocket.clients</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="client_id"/>
+              <field name="last_activity"/>
+              <field name="is_active"/>
+              <field name="path"/>
+              <field name="ip_address"/>
+              <field name="connected_at"/>
+              <field name="sender_id"/>
+            </group>
+
+          </sheet>
+
+        </form>
+      </field>
+    </record>
+    <record id="web_client_action" model="ir.actions.act_window">
+      <field name="name">web_client action</field>
+      <field name="res_model">websocket.clients</field>
+    </record>
+      <menuitem
+        id="web_client_menu"
+        name="web_client"
+        parent="wss_test.menu_root"
+        action="web_client_action"
+      />
+
+  </data>
+</odoo>

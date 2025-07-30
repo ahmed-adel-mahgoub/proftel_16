@@ -1,0 +1,187 @@
+<odoo>
+    <record id="check_attendance_view_tree" model="ir.ui.view">
+      <field name="name">check attendance tree view</field>
+      <field name="model">check.attendance</field>
+      <field name="arch" type="xml">
+        <tree decoration-danger="(not full_approval)">
+            <header>
+
+                 <button name="get_data_from_api"
+                            type="object" string="test online" class="btn-primary"
+
+                    />
+
+            </header>
+          <field name="name"/>
+          <field name="employee_id"/>
+          <field name="employee_email"/>
+          <field name="check_in_map" widget="url" text="view map"/>
+          <field name="check_out_map" widget="url" text="view map"/>
+            <field name="check_in"/>
+            <field name="check_out"/>
+            <field name="full_approval" optional="1" invisible="1"/>
+          <field name="hr_approval_check_in" optional="1" readonly="1"/>
+
+          <field name="hr_approval_check_out" optional="1" readonly="1"/>
+          <field name="manager_approval_check_in" optional="1" readonly="1"/>
+          <field name="manager_approval_check_out" optional="1" readonly="1"/>
+        </tree>
+      </field>
+    </record>
+    <record id="check_attendance_view_form" model="ir.ui.view">
+      <field name="name">check attendance form view</field>
+      <field name="model">check.attendance</field>
+      <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <header>
+                    <field name="state_hr_in" widget="statusbar"/>
+                    <field name="state_hr_out" widget="statusbar"/>
+                    <field name="state_manger_in" widget="statusbar"/>
+                    <field name="state_manger_out" widget="statusbar"/>
+                     <button string="Create Attendance" type="object"
+                             name="create_attendance_record" class="btn-primary"
+                             attrs="{'invisible':[('update', '=', True)]}"
+                     />
+
+                    <button name="action_update_attendance"
+                            type="object" string="Update Attendance" class="btn-primary"
+                            attrs="{'invisible': [('update', '=', False)]}"
+                    />
+
+
+
+                    <!--                     <button name="create_api_record"-->
+                    <!--                             type="object" string="create record" class="btn-primary"-->
+
+                    <!--                     />-->
+
+                </header>
+                <group>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="employee_email"/>
+                    <!--     check_in    -->
+                    <label for="check_in"/>
+                    <div>
+                        <field name="check_in" class="oe_inline" attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                        <span>
+                            <span groups= "check_attendance.hr_group_approval"> HR</span>
+                             <button name="hr_approval_check_in_action"
+                                     type="object"
+                                     class="fa fa-check"
+
+                             groups= "check_attendance.hr_group_approval"
+                                     attrs="{'invisible': [('employee_id', '=', False)]}"
+
+                             />
+                            <span>  </span>
+                            <button name="hr_rejected_check_in_action" type="object" class="fa fa-times"
+                             groups= "check_attendance.hr_group_approval,check_attendance.admin_group_approval"
+                                    attrs="{'invisible': [('employee_id', '=', False)]}"
+                            />
+                            <span groups="check_attendance.manager_group_approval"> manger </span>
+                            <button name="manger_approval_check_in_action"
+                                    type="object"
+
+                                    class="fa fa-check"
+                                    groups="check_attendance.manager_group_approval"
+                                    attrs="{'invisible': [('employee_id', '=', False)]}"
+                            />
+                            <span>  </span>
+                            <button
+                                    name="manger_rejected_check_in_action"
+                                    type="object" class="fa fa-times"
+
+                            groups="check_attendance.manager_group_approval"
+                                    attrs="{'invisible': [('employee_id', '=', False)]}"
+                            />
+                        </span>
+                        <span> <field name="state_hr_in" widget="statusbar"/> </span>
+                    </div>
+                    <!--     check_out     -->
+                    <label for="check_out"/>
+                    <div>
+                        <field name="check_out" class="oe_inline" attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                        <span>
+                            <span groups= "check_attendance.hr_group_approval"> HR</span>
+                            <button name="hr_approval_check_out_action"
+                                     type="object"
+                                     class="fa fa-check"
+                                     groups= "check_attendance.hr_group_approval"
+                                     attrs="{'invisible': [('employee_id', '=', False)]}"
+                             />
+                            <span>  </span>
+                            <button name="hr_rejected_check_out_action"
+                                    type="object"
+                                    class="fa fa-times"
+                                    groups= "check_attendance.hr_group_approval"
+                                    attrs="{'invisible': [('employee_id', '=', False)]}"
+                            />
+                            <span groups="check_attendance.manager_group_approval"> manager </span>
+                            <button name="manger_approval_check_out_action"
+                                    type="object"
+                                    class="fa fa-check"
+                                    groups="check_attendance.manager_group_approval"
+                                    attrs="{'invisible': [('employee_id', '=', False)]}"
+                            />
+                            <span>  </span>
+                            <button name="manger_rejected_check_out_action"
+                                    type="object" class="fa fa-times"
+                                    groups="check_attendance.manager_group_approval"
+                                    attrs="{'invisible': [('employee_id', '=', False)]}"
+
+                            />
+                        </span>
+                    </div>
+
+
+                    <field name="hr_approval_check_in" readonly="1" invisible="1"/>
+                    <field name="hr_approval_check_out" readonly="1" invisible="1"/>
+                    <field name="manager_approval_check_in" readonly="1" invisible="1"/>
+                    <field name="manager_approval_check_out" readonly="1" invisible="1"/>
+                    <field name="full_approval" invisible="1"/>
+                    <field name="check_in_map" widget="url" text="view map"/>
+                    <field name="check_out_map" widget="url" text="view map"/>
+
+                    <field name="is_mobile"/>
+                    <field name="update_api"/>
+                    <field name="update" invisible="1"/>
+                    <field name="x_in_note"/>
+                    <field name="x_out_note"/>
+                </group>
+            </sheet>
+        </form>
+      </field>
+    </record>
+    <!--    search -->
+    <record id="check_attendance_view_search" model="ir.ui.view">
+        <field name="name">check attendance search view</field>
+        <field name="model">check.attendance</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="not_approve" string="not approve" domain="[('full_approval', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="check_attendance_action" model="ir.actions.act_window">
+        <field name="name">check attendance action</field>
+        <field name="res_model">check.attendance</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="check_full_approval_automated_action" model="ir.cron">
+    <field name="name">full attendance approval</field>
+    <field name="model_id" ref="model_check_attendance"/>
+    <field name="state">code</field>
+    <field name="code">model.automated_create_attendance_record()</field>
+  </record>
+
+    <menuitem
+      id="attendance_menu_item"
+      name="attendance"
+      parent = "check_attendance_menu"
+      action= "check_attendance_action"
+    />
+</odoo>

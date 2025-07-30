@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+      id="mobile_app_root_menu"
+      name="Mobile APP"
+      sequence="10"
+    />
+
+</odoo>

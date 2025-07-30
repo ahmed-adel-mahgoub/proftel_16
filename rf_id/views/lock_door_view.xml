@@ -1,0 +1,48 @@
+<odoo>
+  <data>
+    <record id="lock_door_tree_view" model="ir.ui.view">
+      <field name="name">lock_door tree view</field>
+      <field name="model">lock.door</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="category"/>
+        </tree>
+      </field>
+    </record>
+    <record id="lock_door_form_view" model="ir.ui.view">
+      <field name="name">lock_door form view</field>
+      <field name="model">lock.door</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+
+            <header>
+
+             <button name="create_inventory_record" type="object" class="oe_highlight" string="product"
+                        />
+          </header>
+            <group>
+              <field name="name"/>
+              <field name="category"/>
+              <field name="rf_id"/>
+            </group>
+
+          </sheet>
+
+        </form>
+      </field>
+    </record>
+    <record id="lock_door_action" model="ir.actions.act_window">
+      <field name="name">lock_door action</field>
+      <field name="res_model">lock.door</field>
+    </record>
+      <menuitem
+        id="lock_door_menu"
+        name="lock_door"
+        parent="rf_id_root_door_menu"
+        action="lock_door_action"
+      />
+
+  </data>
+</odoo>

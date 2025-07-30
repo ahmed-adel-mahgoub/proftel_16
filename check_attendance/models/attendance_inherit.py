@@ -1,0 +1,22 @@
+from odoo import fields,api,models
+class attendanceinhreit(models.Model):
+    _inherit = 'hr.attendance'
+    check_attendance_id = fields.Integer()
+    in_note= fields.Text()
+    out_note= fields.Text()
+    employee_image= fields.Text()
+    place_image= fields.Text()
+    user_in_image = fields.Text()
+    place_in_image = fields.Text()
+    user_out_image = fields.Text()
+    place_out_image = fields.Text()
+    lat_check_in = fields.Text()
+    long_check_in = fields.Text()
+    lat_check_out = fields.Text()
+    long_check_out = fields.Text()
+    check_in_map = fields.Text()
+    check_out_map = fields.Text()
+    x_check_out_map = fields.Text()
+    x_check_in_map = fields.Text()
+    x_mobile  = fields.Text()
+    email = fields.Char(related='employee_id.work_email')

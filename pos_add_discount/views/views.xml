@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_invoice_document_custom" inherit_id="account.report_invoice_document">
+        <!-- Add new headers after Unit Price -->
+        <xpath expr="//th[@name='th_priceunit']" position="after">
+            <th name="th_amount_before_discount" class="text-end">
+                <span>Amount Before Disc.</span>
+            </th>
+            <th name="th_discount_amount" class="text-end">
+                <span>Discount Amount</span>
+            </th>
+        </xpath>
+
+
+        <xpath expr="//td[@name='account_invoice_line_name']/following-sibling::td[2]" position="after">
+
+              <!-- Amount Before Discount (product.list_price) -->
+                    <td class="text-end">
+                        <span class="text-nowrap" t-esc="line.product_id.list_price" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                    </td>
+                    <!-- Discount Amount (list_price - price_unit) -->
+                    <td class="text-end">
+                        <span class="text-nowrap" t-esc="line.product_id.list_price - line.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                    </td>
+        </xpath>
+    </template>
+</odoo>

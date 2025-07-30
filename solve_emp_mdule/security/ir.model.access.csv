@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_solve_emp_mdule_solve_emp_mdule,solve_emp_mdule.solve_emp_mdule,model_solve_emp_mdule_solve_emp_mdule,base.group_user,1,1,1,1

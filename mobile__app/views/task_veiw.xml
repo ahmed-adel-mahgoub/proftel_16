@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="task_view_form" model="ir.ui.view">
+        <field name="name">task_form</field>
+        <field name="model">mobile_app</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <header>
+
+
+                        <button name="renew_action" type="object" class="oe_highlight" string="renew"
+                                attrs="{'invisible': [('status', 'in', ['done','pending','in_progress'])]}"
+                        />
+
+                        <button name="in_progress_action" type="object" class="oe_highlight" string="strat"
+                                attrs="{'invisible': [('status', 'in', ['done','in_progress'])]}"
+                        />
+                        <button name="done_action" type="object" class="oe_highlight" string="Done"
+                                attrs="{'invisible': [('status', 'in', ['done','cancel'])]}"
+                        />
+                        <!--                        invisible="[('status', '=', 3)]"-->
+                        <button name="cancel_action" type="object" class="oe_highlight" string="Cancel"
+                                attrs="{'invisible': [('status', 'in', ['done','cancel'])]}"/>
+                        <button name="failed_action" type="object" class="oe_highlight" string="failed"
+                                attrs="{'invisible': [('status', 'in', ['done','pending','cancel','failed'])]}"/>
+
+                        <field name="status" widget="statusbar"/>
+                    </header>
+
+                    <h1>
+                        <field name="priority" widget="priority" class="mr-3"/>
+                    </h1>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="enter the task name"/>
+                        </h1>
+                    </div>
+                    <group>
+
+                        <group name="left">
+                            <field name="description"/>
+                            <field name="create_uid"/>
+                            <!--                                <field name="department_id" widget="many2many_tags"/>-->
+                            <!--                                <field name="employees_id" widget="many2many_tags"-->
+                            <!--                                      domain="[('department_id', '=', department_id)]"/>-->
+                            <!--,domain = [('department_id', '=', 1), ('active', '=', True)]-->
+                            <!--                                <field name="department_id"/>-->
+                            <!--                                domain="[('department_id', '=', department_id)]"-->
+
+                            <field name="kind"/>
+                            <field name="related_task"/>
+                            <field name="renew_state" invisible="1"/>
+                            <field name="is_task_renew" invisible="1"/>
+                            <field name="renew_reason" attrs="{'invisible': [('renew_state', '!=', 'renew')]}"/>
+                            <field name="project_id" attrs="{'invisible': [('kind', '!=', '2')]}"/>
+                            <field name="is_task_cancel" invisible="1"/>
+                            <field name="reason_cancel" attrs="{'invisible': [('is_task_cancel', '=', False)]}"/>
+                        </group>
+                        <group name="right">
+                            <field name="is_task_location"/>
+                            <field name="is_task_zone"/>
+                            <field name="type_id"/>
+                            <field name="order_by_id"/>
+                            <field name="note"/>
+                            <field name="in_progress_date"/>
+                            <field name="estimated_date"/>
+                        </group>
+
+                        <group>
+                            <field name="sync"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Task Members">
+
+                            <field name="emp_dep_id">
+                                <tree editable="bottom">
+                                    <field name="department_id"/>
+                                    <field name="employees_id"
+                                           domain="[('department_id', '=', department_id)]"/>
+                                    <field name="sender_id"/>
+                                    <field name="is_send"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Task Dates">
+                            <group>
+                                <field name="done_date"/>
+                                <field name="cancel_date"/>
+                                <field name="starting_at"/>
+                                <field name="ending_at"/>
+                                <field name="reschedule_time"/>
+                                <field name="reschedule_type" string="reminder type"/>
+                                <label for="duration"/>
+                                <div>
+                                    <field name="duration" widget="float_time" class="oe_inline"/>
+                                    <span>hours</span>
+                                </div>
+
+                                <label for="average_time"/>
+                                <div>
+                                    <field name="average_time" widget="float_time" class="oe_inline"/>
+                                    <span>hours</span>
+                                </div>
+
+
+                                <field name="__last_update" string="Last Update on"/>
+                                <field name="create_date"/>
+                                <field name="alarm_ids" widget="many2many_tags"/>
+                                <field name="coming_time"/>
+
+
+                            </group>
+                        </page>
+                        <page string="Contact">
+                            <group>
+                                <field name="is_task_contact"/>
+
+                                <field name="company_type" widget="radio" options="{'horizontal': true}"
+                                       attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                <field name="contact_id" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                <field name="contact_street" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                <field name="contact_street2" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                <field name="contact_city" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                <field name="contact_zip" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                <field name="contact_child_ids" widget="many2many_tags" string="Address"
+                                       attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                            </group>
+                        </page>
+                        <page name="page_options" string="Options">
+                            <group>
+                                <div>
+                                    <group>
+                                        <field name="recurrency"/>
+                                    </group>
+                                    <div attrs="{'invisible': [('recurrency', '=', False)]}">
+                                        <group>
+                                            <label for="interval"/>
+                                            <div class="o_col">
+                                                <div class="o_row">
+                                                    <field name="interval" class="oe_inline"
+                                                           attrs="{'required': [('recurrency', '=', True)]}"/>
+                                                    <field name="rrule_type"
+                                                           attrs="{'required': [('recurrency', '=', True)]}"/>
+                                                </div>
+                                                <widget name="week_days"
+                                                        attrs="{'invisible': [('rrule_type', '!=', 'weekly')]}"/>
+                                            </div>
+                                            <label string="Until" for="end_type"/>
+                                            <div class="o_row">
+                                                <field name="end_type"
+                                                       attrs="{'required': [('recurrency', '=', True)]}"/>
+                                                <field name="count"
+                                                       attrs="{'invisible': [('end_type', '!=', 'count')], 'required': [('recurrency', '=', True)]}"/>
+                                                <field name="until"
+                                                       attrs="{'invisible': [('end_type', '!=', 'end_date')], 'required': [('end_type', '=', 'end_date'), ('recurrency', '=', True)]}"/>
+                                            </div>
+                                        </group>
+                                        <group attrs="{'invisible': [('rrule_type', '!=', 'monthly')]}">
+                                            <label string="Day of Month" for="month_by"/>
+                                            <div class="o_row">
+                                                <field name="month_by"/>
+                                                <field name="day"
+                                                       attrs="{'required': [('month_by', '=', 'date'), ('rrule_type', '=', 'monthly')],
+                                                            'invisible': [('month_by', '!=', 'date')]}"/>
+                                                <field name="byday" string="The"
+                                                       attrs="{'required': [('recurrency', '=', True), ('month_by', '=', 'day'), ('rrule_type', '=', 'monthly')],
+                                                            'invisible': [('month_by', '!=', 'day')]}"/>
+                                                <field name="weekday" nolabel="1"
+                                                       attrs="{'required': [('recurrency', '=', True), ('month_by', '=', 'day'), ('rrule_type', '=', 'monthly')],
+                                                            'invisible': [('month_by', '!=', 'day')]}"/>
+                                            </div>
+                                        </group>
+                                    </div>
+                                </div>
+                                <group>
+                                    <field name="privacy"/>
+                                    <field name="show_as"/>
+                                    <field name="recurrence_id" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <!--                        new websocket-->
+                        <page string="websocket">
+                            <group>
+                                <!--                                <field name="websocket_client_id"/>-->
+                                <field name="websocket_client_id" widget="many2many_tags"/>
+                                <field name="sender_id"/>
+                                <button
+                                        name="action_send_via_websocket"
+                                        type="object"
+                                        string="Send via WebSocket"
+                                        class="btn-primary"
+                                        attrs="{'invisible': [('websocket_client_id', '=', False)]}"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+
+                    <field name="activity_id"/>
+
+                    <field name="reply_activity_id"/>
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="taskview_tree" model="ir.ui.view">
+        <field name="name">task_tree</field>
+        <field name="model">mobile_app</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1">
+                <field name="name"/>
+                <field name="reason_cancel" optional="1"/>
+                <field name="done_date" optional="1"/>
+                <field name="cancel_date" optional="1"/>
+                <field name="description" optional="1"/>
+                <field name="description"/>
+                <field name="is_task_location" optional="1"/>
+                <field name="is_task_zone" optional="1"/>
+                <field name="status" optional="1"/>
+            </tree>
+        </field>
+
+    </record>
+    <record id="taskview_search" model="ir.ui.view">
+        <field name="name">task_search</field>
+        <field name="model">mobile_app</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="kind"/>
+                <field name="status"/>
+                <filter name="department_id" string="department group" context="{'group_by':'department_id'}"/>
+            </search>
+        </field>
+
+    </record>
+    <record id="task_action" model="ir.actions.act_window">
+        <field name="name">task</field>
+        <field name="res_model">mobile_app</field>
+    </record>
+    <menuitem
+            id="task_menu_item"
+            name="Task"
+            parent="mobile_app_root_menu"
+            action="task_action"
+    />
+</odoo>

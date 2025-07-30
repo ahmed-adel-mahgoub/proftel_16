@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="task_history_view_form" model="ir.ui.view">
+        <field name="name">task_history_form</field>
+        <field name="model">task.history</field>
+        <field name="arch" type="xml">
+            <form>
+              <group name = "left">
+                  <field name="user_id"/>
+                  <field name="task_id"/>
+              </group>
+              <group name="right">
+                  <field name="old_state"/>
+                  <field name="new_state"/>
+                  <field name="date"/>
+              </group>
+            </form>
+        </field>
+    </record>
+    <record id="task_hisory_view_tree" model="ir.ui.view">
+        <field name="name">task_history_tree</field>
+        <field name="model">task.history</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1">
+
+                <field name="user_id" />
+                <field name="task_id"/>
+                <field name="old_state"/>
+                <field name="new_state"/>
+                <field name="date"/>
+
+            </tree>
+        </field>
+
+    </record>
+
+    <record id="task_history_action" model="ir.actions.act_window">
+        <field name="name">task history</field>
+        <field name="res_model">task.history</field>
+    </record>
+    <menuitem
+            id="task_history_menu_item"
+            name="Task History"
+            parent="mobile_app_root_menu"
+            action="task_history_action"
+    />
+</odoo>

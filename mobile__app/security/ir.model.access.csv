@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mobile_app,access_mobile_app,model_mobile_app,,1,1,1,1
+access_type,access_type,model_type,,1,1,1,1
+access_manger,access_manger,model_manger,,1,1,1,1
+access_empline,access_empline,model_empline,,1,1,1,1
+access_mail_reply_log,access_mail_reply_log,model_mail_reply_log,,1,1,1,1
+access_task_history,access_task_history,model_task_history,,1,1,1,1
+access_task_cancellation_wizard,task.cancellation.wizard.access,model_task_cancellation_wizard,base.group_user,1,1,1,1
+access_tracking_send,tracking_send,model_tracking_send,base.group_user,1,1,1,1

@@ -1,0 +1,51 @@
+<odoo>
+  <data>
+    <record id="rf_id_tree_view" model="ir.ui.view">
+      <field name="name">rf_id tree view</field>
+      <field name="model">rf.id</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="category"/>
+        </tree>
+      </field>
+    </record>
+    <record id="rf_id_form_view" model="ir.ui.view">
+      <field name="name">rf_id form view</field>
+      <field name="model">rf.id</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+             <button name="update_rf_field" type="object" class="oe_highlight" string="emp rfid"
+                        />
+             <button name="update_rf_door" type="object" class="oe_highlight" string="door rfid"
+                        />
+          </header>
+          <sheet>
+
+            <group>
+              <field name="name"/>
+              <field name="category"/>
+              <field name="employee_id" attrs="{'invisible': [('category', '!=', 'employee')]}"/>
+              <field name="door_id" attrs="{'invisible': [('category', '!=', 'door')]}"/>
+
+            </group>
+
+          </sheet>
+
+        </form>
+      </field>
+    </record>
+    <record id="rf_id_action" model="ir.actions.act_window">
+      <field name="name">rf_id action</field>
+      <field name="res_model">rf.id</field>
+    </record>
+      <menuitem
+        id="rf_id_menu"
+        name="rf_id"
+        parent="rf_id_root_menu"
+        action="rf_id_action"
+      />
+
+  </data>
+</odoo>

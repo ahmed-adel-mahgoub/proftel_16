@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_employee_sender_id" model="ir.sequence">
+            <field name="name">Employee Sender ID Sequence</field>
+            <field name="code">hr.employee.sender.id</field>
+            <field name="prefix">SEN</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</odoo>

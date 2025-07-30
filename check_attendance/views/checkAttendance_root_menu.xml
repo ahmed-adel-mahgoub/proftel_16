@@ -1,0 +1,11 @@
+<odoo>
+    <menuitem
+        id="check_attendance_root_menu"
+        name=" App"
+    />
+     <menuitem
+        id="check_attendance_menu"
+        name="Attendance"
+        parent="check_attendance_root_menu"
+    />
+</odoo>

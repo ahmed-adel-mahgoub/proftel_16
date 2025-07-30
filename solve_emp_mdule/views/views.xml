@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="solve_emp_mdule.list">
+      <field name="name">solve_emp_mdule list</field>
+      <field name="model">solve_emp_mdule.solve_emp_mdule</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="solve_emp_mdule.action_window">
+      <field name="name">solve_emp_mdule window</field>
+      <field name="res_model">solve_emp_mdule.solve_emp_mdule</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="solve_emp_mdule.action_server">
+      <field name="name">solve_emp_mdule server</field>
+      <field name="model_id" ref="model_solve_emp_mdule_solve_emp_mdule"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="solve_emp_mdule" id="solve_emp_mdule.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="solve_emp_mdule.menu_1" parent="solve_emp_mdule.menu_root"/>
+    <menuitem name="Menu 2" id="solve_emp_mdule.menu_2" parent="solve_emp_mdule.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="solve_emp_mdule.menu_1_list" parent="solve_emp_mdule.menu_1"
+              action="solve_emp_mdule.action_window"/>
+    <menuitem name="Server to list" id="solve_emp_mdule" parent="solve_emp_mdule.menu_2"
+              action="solve_emp_mdule.action_server"/>
+-->
+  </data>
+</odoo>

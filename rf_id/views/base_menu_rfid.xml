@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+      id="rf_id_root_menu"
+      name="Rf Id"
+    />
+    <menuitem
+      id="rf_id_root_door_menu"
+      name="lock door"
+      parent="rf_id_root_menu"
+    />
+</odoo>

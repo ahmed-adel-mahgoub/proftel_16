@@ -1,0 +1,31 @@
+<odoo>
+    <record id="smart_inventory_view_tree" model="ir.ui.view">
+        <field name="name">smart inventory tree</field>
+        <field name="model">smart.inventory</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="Qyt"/>
+                <field name="type"/>
+                <field name="location"/>
+                <field name="owner"/>
+                <field name="category"/>
+                <field name="condition"/>
+                <field name="_image_path"/>
+                <field name="_user_name"/>
+                <field name="RF_ID"/>
+                <field name="image_links_html" widget="html"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="smart_inventory_action" model="ir.actions.act_window">
+        <field name="name">Smart Inventory</field>
+        <field name="res_model">smart.inventory</field>
+        <field name="view_mode">tree,form</field>
+
+    </record>
+
+    <menuitem id="smart_inventory_menu_root" name="Smart Inventory"
+               action="smart_inventory_action"/>
+</odoo>

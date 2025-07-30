@@ -1,0 +1,11 @@
+<odoo>
+    <record id="manager_group_approval" model="res.groups">
+        <field name="name">manager group</field>
+    </record>
+    <record id="hr_group_approval" model="res.groups">
+        <field name="name">HR group</field>
+    </record>
+    <record id="admin_group_approval" model="res.groups">
+        <field name="name">Admin group</field>
+    </record>
+</odoo>

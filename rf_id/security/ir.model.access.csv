@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rf_id,rf_id,model_rf_id,base.group_user,1,1,1,1
+access_lock_door,lock_door,model_lock_door,base.group_user,1,1,1,1

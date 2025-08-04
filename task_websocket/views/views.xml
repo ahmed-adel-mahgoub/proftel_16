@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View for Task -->
+    <record id="view_task_form_inherit_websocket" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.websocket</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <!-- Add fields to the form view -->
+            <xpath expr="//field[@name='description']" position="after">
+                <group>
+                    <field name="member_ids" widget="many2many_tags"/>
+                    <field name="notified_member_ids" widget="many2many_tags" readonly="1"/>
+                </group>
+
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Tree View for Task -->
+    <record id="view_task_tree_inherit_websocket" model="ir.ui.view">
+        <field name="name">project.task.tree.inherit.websocket</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="member_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Employee Form View to add sender_id -->
+    <record id="view_employee_form_inherit_websocket" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.websocket</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Websocket Notification">
+                    <field name="sender_id" string="Websocket Sender ID" help="Unique identifier for websocket notifications"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

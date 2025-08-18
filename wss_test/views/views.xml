@@ -43,7 +43,7 @@
 
 
 
-    <menuitem name="wss" id="wss_test.menu_root"/>
+    <menuitem name="Instant Clients" id="wss_test.menu_root"/>
 
     <!-- menu categories -->
 

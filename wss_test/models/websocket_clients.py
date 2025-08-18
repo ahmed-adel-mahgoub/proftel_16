@@ -20,7 +20,12 @@ class WebsocketClients(models.Model):
 
     client_id = fields.Char(string='Client ID', required=True, index=True)
     name = fields.Char(string='Client Name')
-    connected_at = fields.Datetime(string='Connected At', default=fields.Datetime.now)
+    employee_id = fields.Many2one('hr.employee',string='Employee')
+    department_id = fields.Char(related='employee_id.department_id.name',
+                                string='Department'
+                                , readonly=True)
+    connected_at = fields.Datetime(string='Connected At'
+                                   , default=fields.Datetime.now)
     disconnected_at = fields.Datetime(string='Disconnected At')
     ip_address = fields.Char(string='IP Address')
     path = fields.Char(string='Connection Path')
@@ -113,3 +118,19 @@ class WebsocketClients(models.Model):
             _logger.error("WebSocket error for client %s (Sender: %s): %s",
                           client_id, message.get('sender_id', 'none'), str(e), exc_info=True)
             return False
+
+    def delete_inactive_clients(self):
+        """Delete all inactive client records"""
+        inactive_clients = self.search([('is_active', '=', False)])
+        inactive_clients.unlink()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Success'),
+                'message': _('Deleted %s inactive clients') % len(
+                    inactive_clients),
+                'sticky': False,
+                'type': 'success',
+            }
+        }

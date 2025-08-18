@@ -1,50 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from odoo.release import version
-
 odoo_version = version
-from calendar import calendar
-from datetime import timedelta
-from itertools import repeat
-from odoo.exceptions import ValidationError
-from odoo.exceptions import UserError
-import websockets
-import asyncio
-import json
 import logging
 _logger = logging.getLogger(__name__)
-
-import math
-import uuid
 from odoo import models, fields, api,_
 from odoo.exceptions import UserError
-from odoo.tools.view_validation import READONLY
 from dateutil.relativedelta import relativedelta
 import pytz
-from odoo.addons.base.models.res_partner import _tz_get
-from odoo.addons.calendar.models.calendar_recurrence import (
-    weekday_to_field,
-    RRULE_TYPE_SELECTION,
-    END_TYPE_SELECTION,
-    MONTH_BY_SELECTION,
-    WEEKDAY_SELECTION,
-    BYDAY_SELECTION
-)
 
-def get_weekday_occurence(date):
-    """
-    :returns: ocurrence
 
-    >>> get_weekday_occurence(date(2019, 12, 17))
-    3  # third Tuesday of the month
 
-    >>> get_weekday_occurence(date(2019, 12, 25))
-    -1  # last Friday of the month
-    """
-    occurence_in_month = math.ceil(date.day/7)
-    if occurence_in_month in {4, 5}:  # fourth or fifth week on the month -> last
-        return -1
-    return occurence_in_month
 
 
 class mobile_app(models.Model):
@@ -55,6 +21,12 @@ class mobile_app(models.Model):
     # , 'calendar.recurrence'
 
     name = fields.Char(tracking=True)
+    task_name = fields.Char(tracking=True)
+    status_id = fields.Integer(tracking=True)
+    task_type = fields.Char(tracking=True)
+    reminder = fields.Integer(tracking=True)
+    address = fields.Char(tracking=True)
+    location = fields.Char(tracking=True)
 
     #dates
     duration=fields.Float(string='Duration', compute='_compute_hours_difference')
@@ -75,8 +47,14 @@ class mobile_app(models.Model):
     #new department field
 
     department_id = fields.Many2many("hr.department", string="Privacy")
-    kind= fields.Selection([('1','Internal'),('2','Client')] ,tracking=True)
-    status = fields.Selection([('pending','Pending'),('in_progress','In Progress'),('done','Done'),('cancel','Cancel'),('failed','Failed')],tracking=True,default='pending')
+    kind_id= fields.Many2one('kind',string="kind")
+    status = fields.Selection([('pending','Pending'),
+                               ('in_progress','In Progress'),
+                               ('done','Done'),
+                              ('cancel','Cancel'),
+                             ('failed','Failed')],tracking=True,
+                              default='pending'
+                              )
     related_task=fields.Many2one('mobile_app',string="Related Task")
 
     sync = fields.Boolean(readonly=True)
@@ -84,7 +62,7 @@ class mobile_app(models.Model):
     type_id = fields.Many2one('type', string="Type")
     #contact
     is_task_contact=fields.Boolean(string="Is Task Related to Contact")
-    company_type =fields.Selection([('individual','Individual'),('company','Company')])
+    company_type_id =fields.Many2one('company.type')
     contact_id=fields.Many2one('res.partner',string="Contact")
     contact_street = fields.Char(related='contact_id.street')
     contact_street2 = fields.Char(related='contact_id.street2')
@@ -106,24 +84,14 @@ class mobile_app(models.Model):
     #cancel action
     is_task_cancel=fields.Boolean()
     reschedule_time=fields.Datetime()
-    reschedule_type=fields.Selection([('from_start_date','from start date'),('from_end_date','from end date')])
+    reschedule_type_id=fields.Many2one('reschedule.type')
     #renew reason
     renew_reason = fields.Char()
     is_task_renew = fields.Boolean()
     renew_state=fields.Selection({
         ('renew','renew')
     })
-    # new fields websockets
-    # websocket_client_id = fields.Many2one(
-    #     'websocket.clients',
-    #     string='WebSocket Client',
-    #     domain="[('is_active', '=', True)]"
-    # )
-    # sender_id = fields.Char(
-    #     string='Sender ID',
-    #     help="The ID used to identify this record in WebSocket communications",
-    #     related="websocket_client_id.sender_id"
-    # )
+
     websocket_client_id = fields.Many2many(
         'websocket.clients',
         string='WebSocket Clients',
@@ -140,180 +108,10 @@ class mobile_app(models.Model):
     def _compute_sender_ids(self):
         for record in self:
             record.sender_id = ', '.join(record.websocket_client_id.mapped('sender_id'))
-#-----------------------------------------------------------------------------------------
-    # RECURRENCE FIELD
-    recurrency = fields.Boolean('Recurrent')
-    recurrence_id = fields.Many2one(
-        'calendar.recurrence', string="Recurrence Rule")
-    follow_recurrence = fields.Boolean(
-        default=False)  # Indicates if an event follows the recurrence, i.e. is not an exception
-    recurrence_update = fields.Selection([
-        ('self_only', "This event"),
-        ('future_events', "This and following events"),
-        ('all_events', "All events"),
-    ], store=False, copy=False, default='self_only',
-        help="Choose what to do with other events in the recurrence. Updating All Events is not allowed when dates or time is modified")
-    # Those field are pseudo-related fields of recurrence_id.
-    # They can't be "real" related fields because it should work at record creation
-    # when recurrence_id is not created yet.
-    # If some of these fields are set and recurrence_id does not exists,
-    # a `calendar.recurrence.rule` will be dynamically created.
-    rrule = fields.Char('Recurrent Rule', compute='_compute_recurrence', readonly=False)
-    rrule_type = fields.Selection(RRULE_TYPE_SELECTION, string='Recurrence',
-                                  help="Let the event automatically repeat at that interval",
-                                  compute='_compute_recurrence', readonly=False)
-    event_tz = fields.Selection(
-        _tz_get, string='Timezone', compute='_compute_recurrence', readonly=False)
-    end_type = fields.Selection(
-        END_TYPE_SELECTION, string='Recurrence Termination',
-        compute='_compute_recurrence', readonly=False)
-    interval = fields.Integer(
-        string='Repeat Every', compute='_compute_recurrence', readonly=False,
-        help="Repeat every (Days/Week/Month/Year)")
-    count = fields.Integer(
-        string='Repeat', help="Repeat x times", compute='_compute_recurrence', readonly=False)
-    mon = fields.Boolean(compute='_compute_recurrence', readonly=False)
-    tue = fields.Boolean(compute='_compute_recurrence', readonly=False)
-    wed = fields.Boolean(compute='_compute_recurrence', readonly=False)
-    thu = fields.Boolean(compute='_compute_recurrence', readonly=False)
-    fri = fields.Boolean(compute='_compute_recurrence', readonly=False)
-    sat = fields.Boolean(compute='_compute_recurrence', readonly=False)
-    sun = fields.Boolean(compute='_compute_recurrence', readonly=False)
-    month_by = fields.Selection(
-        MONTH_BY_SELECTION, string='Option', compute='_compute_recurrence', readonly=False)
-    day = fields.Integer('Date of month', compute='_compute_recurrence', readonly=False)
-    weekday = fields.Selection(WEEKDAY_SELECTION, compute='_compute_recurrence', readonly=False)
-    byday = fields.Selection(BYDAY_SELECTION, string="By day", compute='_compute_recurrence', readonly=False)
-    until = fields.Date(compute='_compute_recurrence', readonly=False)
-    # UI Fields.
-    display_description = fields.Boolean(compute='_compute_display_description')
-    privacy = fields.Selection(
-        [('public', 'Public'),
-         ('private', 'Private'),
-         ('confidential', 'Only internal users')],
-        'Privacy', default='public', required=True,
-        help="People to whom this event will be visible.")
-    show_as = fields.Selection(
-        [('free', 'Available'),
-         ('busy', 'Busy')], 'Show as', default='busy', required=True,
-        help="If the time is shown as 'busy', this event will be visible to other people with either the full \
-            information or simply 'busy' written depending on its privacy. Use this option to let other people know \
-            that you are unavailable during that period of time. \n If the event is shown as 'free', other users know \
-            that you are available during that period of time.")
-    start = fields.Datetime(
-        'Start', required=True, tracking=True, default=fields.Date.today,
-        help="Start date of an event, without time for full days events")
-    allday = fields.Boolean('All Day', default=False)
-    @api.depends('recurrence_id', 'recurrency')
-    def _compute_recurrence(self):
-        recurrence_fields = self._get_recurrent_fields()
-        false_values = {field: False for field in recurrence_fields}  # computes need to set a value
-        defaults = self.env['calendar.recurrence'].default_get(recurrence_fields)
-        default_rrule_values = self.recurrence_id.default_get(recurrence_fields)
-        for event in self:
-            if event.recurrency:
-                event.update(
-                    defaults)  # default recurrence values are needed to correctly compute the recurrence params
-                event_values = event._get_recurrence_params()
-                rrule_values = {
-                    field: event.recurrence_id[field]
-                    for field in recurrence_fields
-                    if event.recurrence_id[field]
-                }
-                rrule_values = rrule_values or default_rrule_values
-                event.update({**false_values, **defaults, **event_values, **rrule_values})
-            else:
-                event.update(false_values)
-
 
 
     @api.model
-    def _get_recurrent_fields(self):
-        return {'byday', 'until', 'rrule_type', 'month_by', 'event_tz', 'rrule',
-                'interval', 'count', 'end_type', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat',
-                'sun', 'day', 'weekday'}
 
-    def _get_recurrence_params(self):
-        if not self:
-            return {}
-        event_date = self._get_start_date()
-        weekday_field_name = weekday_to_field(event_date.weekday())
-        return {
-            weekday_field_name: True,
-            'weekday': weekday_field_name.upper(),
-            'byday': str(get_weekday_occurence(event_date)),
-            'day': event_date.day,
-        }
-    def _get_start_date(self):
-        """Return the event starting date in the event's timezone.
-        If no starting time is assigned (yet), return today as default
-        :return: date
-        """
-        if not self.start:
-            return fields.Date.today()
-        if self.recurrency and self.event_tz:
-            tz = pytz.timezone(self.event_tz)
-            # Ensure that all day events date are not calculated around midnight. TZ shift would potentially return bad date
-            start = self.start if not self.allday else self.start.replace(hour=12)
-            return pytz.utc.localize(start).astimezone(tz).date()
-        return self.start.date()
-
-
-    def _split_recurrence(self, time_values):
-        """Apply time changes to events and update the recurrence accordingly.
-
-        :return: detached events
-        """
-        self.ensure_one()
-        if not time_values:
-            return self.browse()
-        if self.follow_recurrence and self.recurrency:
-            previous_week_day_field = weekday_to_field(self._get_start_date().weekday())
-        else:
-            # When we try to change recurrence values of an event not following the recurrence, we get the parameters from
-            # the base_event
-            previous_week_day_field = weekday_to_field(self.recurrence_id.base_event_id._get_start_date().weekday())
-        self.write(time_values)
-        return self._apply_recurrence_values({
-            previous_week_day_field: False,
-            **self._get_recurrence_params(),
-        }, future=True)
-
-    @api.model
-    def _get_recurrence_params_by_date(self, event_date):
-        """ Return the recurrence parameters from a date object. """
-        weekday_field_name = weekday_to_field(event_date.weekday())
-        return {
-            weekday_field_name: True,
-            'weekday': weekday_field_name.upper(),
-            'byday': str(get_weekday_occurence(event_date)),
-            'day': event_date.day,
-        }
-
-    def _break_recurrence(self, future=True):
-        """Breaks the event's recurrence.
-        Stop the recurrence at the current event if `future` is True, leaving past events in the recurrence.
-        If `future` is False, all events in the recurrence are detached and the recurrence itself is unlinked.
-        :return: detached events excluding the current events
-        """
-        recurrences_to_unlink = self.env['calendar.recurrence']
-        detached_events = self.env['calendar.event']
-        for event in self:
-            recurrence = event.recurrence_id
-            if future:
-                detached_events |= recurrence._stop_at(event)
-            else:
-                detached_events |= recurrence.calendar_event_ids
-                recurrence.calendar_event_ids.recurrence_id = False
-                recurrences_to_unlink |= recurrence
-        recurrences_to_unlink.with_context(archive_on_error=True).unlink()
-        return detached_events - self
-    #-----------------------------------------------------------------------------------
-
-    # day = fields.Many2many('calendar.weekday', string='Days', default=[(6, False)])
-    # recurrency=fields.Boolean()
-    @api.model
-    #mob sync
     def _write(self, vals):
         rec = super(mobile_app,self)._write(vals)
         for rec in self:
@@ -350,9 +148,8 @@ class mobile_app(models.Model):
             return rec.status
 
     def cancel_action(self):
-        self.ensure_one()  # Ensures this is called on a single record
-        # self.status = 'cancel'
-        # Return wizard popup without changing status first
+        self.ensure_one()
+
         return {
             'name': 'Enter Cancellation Reason',
             'type': 'ir.actions.act_window',

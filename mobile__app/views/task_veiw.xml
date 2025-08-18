@@ -42,21 +42,18 @@
                     <group>
 
                         <group name="left">
+
+                            <field name="task_name"/>
                             <field name="description"/>
                             <field name="create_uid"/>
-                            <!--                                <field name="department_id" widget="many2many_tags"/>-->
-                            <!--                                <field name="employees_id" widget="many2many_tags"-->
-                            <!--                                      domain="[('department_id', '=', department_id)]"/>-->
-                            <!--,domain = [('department_id', '=', 1), ('active', '=', True)]-->
-                            <!--                                <field name="department_id"/>-->
-                            <!--                                domain="[('department_id', '=', department_id)]"-->
 
-                            <field name="kind"/>
+
+                            <field name="kind_id"/>
                             <field name="related_task"/>
                             <field name="renew_state" invisible="1"/>
                             <field name="is_task_renew" invisible="1"/>
                             <field name="renew_reason" attrs="{'invisible': [('renew_state', '!=', 'renew')]}"/>
-                            <field name="project_id" attrs="{'invisible': [('kind', '!=', '2')]}"/>
+                            <field name="project_id"/>
                             <field name="is_task_cancel" invisible="1"/>
                             <field name="reason_cancel" attrs="{'invisible': [('is_task_cancel', '=', False)]}"/>
                         </group>
@@ -68,6 +65,7 @@
                             <field name="note"/>
                             <field name="in_progress_date"/>
                             <field name="estimated_date"/>
+
                         </group>
 
                         <group>
@@ -96,7 +94,7 @@
                                 <field name="starting_at"/>
                                 <field name="ending_at"/>
                                 <field name="reschedule_time"/>
-                                <field name="reschedule_type" string="reminder type"/>
+                                <field name="reschedule_type_id" string="reminder type"/>
                                 <label for="duration"/>
                                 <div>
                                     <field name="duration" widget="float_time" class="oe_inline"/>
@@ -122,8 +120,7 @@
                             <group>
                                 <field name="is_task_contact"/>
 
-                                <field name="company_type" widget="radio" options="{'horizontal': true}"
-                                       attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                <field name="company_type_id" />
                                 <field name="contact_id" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
                                 <field name="contact_street" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
                                 <field name="contact_street2" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
@@ -133,59 +130,7 @@
                                        attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
                             </group>
                         </page>
-                        <page name="page_options" string="Options">
-                            <group>
-                                <div>
-                                    <group>
-                                        <field name="recurrency"/>
-                                    </group>
-                                    <div attrs="{'invisible': [('recurrency', '=', False)]}">
-                                        <group>
-                                            <label for="interval"/>
-                                            <div class="o_col">
-                                                <div class="o_row">
-                                                    <field name="interval" class="oe_inline"
-                                                           attrs="{'required': [('recurrency', '=', True)]}"/>
-                                                    <field name="rrule_type"
-                                                           attrs="{'required': [('recurrency', '=', True)]}"/>
-                                                </div>
-                                                <widget name="week_days"
-                                                        attrs="{'invisible': [('rrule_type', '!=', 'weekly')]}"/>
-                                            </div>
-                                            <label string="Until" for="end_type"/>
-                                            <div class="o_row">
-                                                <field name="end_type"
-                                                       attrs="{'required': [('recurrency', '=', True)]}"/>
-                                                <field name="count"
-                                                       attrs="{'invisible': [('end_type', '!=', 'count')], 'required': [('recurrency', '=', True)]}"/>
-                                                <field name="until"
-                                                       attrs="{'invisible': [('end_type', '!=', 'end_date')], 'required': [('end_type', '=', 'end_date'), ('recurrency', '=', True)]}"/>
-                                            </div>
-                                        </group>
-                                        <group attrs="{'invisible': [('rrule_type', '!=', 'monthly')]}">
-                                            <label string="Day of Month" for="month_by"/>
-                                            <div class="o_row">
-                                                <field name="month_by"/>
-                                                <field name="day"
-                                                       attrs="{'required': [('month_by', '=', 'date'), ('rrule_type', '=', 'monthly')],
-                                                            'invisible': [('month_by', '!=', 'date')]}"/>
-                                                <field name="byday" string="The"
-                                                       attrs="{'required': [('recurrency', '=', True), ('month_by', '=', 'day'), ('rrule_type', '=', 'monthly')],
-                                                            'invisible': [('month_by', '!=', 'day')]}"/>
-                                                <field name="weekday" nolabel="1"
-                                                       attrs="{'required': [('recurrency', '=', True), ('month_by', '=', 'day'), ('rrule_type', '=', 'monthly')],
-                                                            'invisible': [('month_by', '!=', 'day')]}"/>
-                                            </div>
-                                        </group>
-                                    </div>
-                                </div>
-                                <group>
-                                    <field name="privacy"/>
-                                    <field name="show_as"/>
-                                    <field name="recurrence_id" invisible="1"/>
-                                </group>
-                            </group>
-                        </page>
+
                         <!--                        new websocket-->
                         <page string="websocket">
                             <group>
@@ -239,7 +184,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
-                <field name="kind"/>
+
                 <field name="status"/>
                 <filter name="department_id" string="department group" context="{'group_by':'department_id'}"/>
             </search>

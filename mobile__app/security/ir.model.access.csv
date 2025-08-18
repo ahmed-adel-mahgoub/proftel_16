@@ -7,3 +7,6 @@ access_mail_reply_log,access_mail_reply_log,model_mail_reply_log,,1,1,1,1
 access_task_history,access_task_history,model_task_history,,1,1,1,1
 access_task_cancellation_wizard,task.cancellation.wizard.access,model_task_cancellation_wizard,base.group_user,1,1,1,1
 access_tracking_send,tracking_send,model_tracking_send,base.group_user,1,1,1,1
+access_kind,kind,model_kind,base.group_user,1,1,1,1
+access_company_type,company_type,model_company_type,base.group_user,1,1,1,1
+access_reschedule_type,reschedule_type,model_reschedule_type,base.group_user,1,1,1,1

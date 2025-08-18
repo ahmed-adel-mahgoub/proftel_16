@@ -1,0 +1,55 @@
+<odoo>
+    <record id="view_modules_rules_form" model="ir.ui.view">
+        <field name="name">modules_rules.form</field>
+        <field name="model">modules.rules</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="company_ids" widget="many2many_tags"/>
+                    </group>
+
+                    <group string="Departments" attrs="{'invisible': [('company_ids', '=', False)]}">
+                        <field name="department_ids"
+                                widget="many2many_tags"
+                                domain="[('company_id', 'in', company_ids)]"/>
+                    </group>
+
+                    <group string="Admins" attrs="{'invisible': [('department_ids', '=', False)]}">
+                        <field name="employee_ids"
+                                widget="many2many_tags"
+                                domain="[('department_id', 'in', department_ids)]"/>
+                    </group>
+
+                    <group string="Models">
+                        <field name="modules_ids"
+                                widget="many2many_tags"
+                               />
+                    </group>
+
+                   
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_modules_rules" model="ir.actions.act_window">
+        <field name="name">modules_rules</field>
+        <field name="res_model">modules.rules</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new modules_rules
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item under HR -->
+    <menuitem
+            id="menu_modules_rules_root"
+            name="App Module"
+            parent="menu_permissions_root"
+            action="action_modules_rules"
+            sequence="102"
+    />
+</odoo>

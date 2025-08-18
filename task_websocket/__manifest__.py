@@ -14,5 +14,5 @@
     },
     'installable': True,
     'application': False,
-    'post_init_hook': '_start_websocket_server',
+    'post_init_hook': 'post_init_hook',
 }

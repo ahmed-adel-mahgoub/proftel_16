@@ -11,7 +11,7 @@ from typing import Dict
 from datetime import timedelta
 _logger = logging.getLogger(__name__)
 ODOO_RC = '/opt/odoo16/odoo/conf/odoo.conf'
-DB_NAME = 'odoo16dev'
+DB_NAME = 'websocket_16'
 
 # Define allowed models and their required/optional fields
 ALLOWED_MODELS = {
@@ -85,6 +85,7 @@ class ClientManager:
         if self.registry:
             with self.registry.cursor() as cr:
                 env = Environment(cr, odoo.SUPERUSER_ID, {})
+
                 env['websocket.clients'].create({
                     'client_id': client_id,
                     'name': f"Client {client_id[:8]}",
@@ -92,7 +93,8 @@ class ClientManager:
                     'path': path,
                     'is_active': True,
                     'connected_at': now,
-                    'last_activity': now
+                    'last_activity': now,
+
                 })
 
         print(f"New client connected: {client_id} on path: {path}")
@@ -213,273 +215,11 @@ async def handle_message(websocket, client_id, registry, message):
             }
 
 
-        # if action == 'register':
-        #     # Validate required fields
-        #     if 'name' not in data:
-        #         raise ValueError("Name is required for registration")
-        #     if 'sender_id' not in data:
-        #         raise ValueError("sender_id is required for registration")
-        #     if 'client_id' not in data:
-        #         data['client_id'] = str(uuid.uuid4())  # Generate new client_id if not provided
-        #
-        #     # Get or create client info
-        #     if client_id not in client_manager.client_info:
-        #         client_manager.client_info[client_id] = {}
-        #
-        #     # Update client information
-        #     client_manager.client_info[client_id].update({
-        #         'name': data['name'],
-        #         'sender_id': data['sender_id'],
-        #         'client_id': data['client_id'],
-        #         'last_activity': fields.Datetime.now()
-        #     })
-        #
-        #     # Update database record
-        #     if client_manager.registry:
-        #         with client_manager.registry.cursor() as cr:
-        #             env = Environment(cr, odoo.SUPERUSER_ID, {})
-        #             client = env['websocket.clients'].search([('client_id', '=', client_id)], limit=1)
-        #             if client:
-        #                 client.write({
-        #                     'name': data['name'],
-        #                     'sender_id': data['sender_id'],
-        #                     'is_active': True,
-        #                     'last_activity': fields.Datetime.now()
-        #                 })
-        #             else:
-        #                 env['websocket.clients'].create({
-        #                     'client_id': client_id,
-        #                     'name': data['name'],
-        #                     'sender_id': data['sender_id'],
-        #                     'is_active': True,
-        #                     'connected_at': fields.Datetime.now(),
-        #                     'last_activity': fields.Datetime.now()
-        #                 })
-        #
-        #
-        #     return {
-        #         **response_base,
-        #         'status': 'success',
-        #         'client_id': client_id,
-        #         'message': 'Client registered successfully'
-        #     }
-        # if action == 'register':
-        #     # Validate required fields
-        #     if 'name' not in data:
-        #         raise ValueError("Name is required for registration")
-        #     if 'sender_id' not in data:
-        #         raise ValueError("sender_id is required for registration")
-        #     if 'client_id' not in data:
-        #         data['client_id'] = str(uuid.uuid4())  # Generate new client_id if not provided
-        #
-        #     # Get or create client info
-        #     if client_id not in client_manager.client_info:
-        #         client_manager.client_info[client_id] = {}
-        #
-        #     # Update client information
-        #     client_manager.client_info[client_id].update({
-        #         'name': data['name'],
-        #         'sender_id': data['sender_id'],
-        #         'client_id': data['client_id'],
-        #         'last_activity': fields.Datetime.now()
-        #     })
-        #
-        #     # Update database record
-        #     if client_manager.registry:
-        #         with client_manager.registry.cursor() as cr:
-        #             env = Environment(cr, odoo.SUPERUSER_ID, {})
-        #
-        #             # Handle websocket client record
-        #             client = env['websocket.clients'].search([('client_id', '=', client_id)], limit=1)
-        #             if client:
-        #                 client.write({
-        #                     'name': data['name'],
-        #                     'sender_id': data['sender_id'],
-        #                     'is_active': True,
-        #                     'last_activity': fields.Datetime.now()
-        #                 })
-        #             else:
-        #                 env['websocket.clients'].create({
-        #                     'client_id': client_id,
-        #                     'name': data['name'],
-        #                     'sender_id': data['sender_id'],
-        #                     'is_active': True,
-        #                     'connected_at': fields.Datetime.now(),
-        #                     'last_activity': fields.Datetime.now()
-        #                 })
-        #
-        #             # Search for pending tracking.send records with related data
-        #             pending_messages = env['tracking.send'].search([
-        #                 ('sender_id', '=', data['sender_id']),
-        #                 ('is_send', '=', False)
-        #             ])
-        #
-        #             # Prepare pending assignments data
-        #             pending_assignments = []
-        #             for message in pending_messages:
-        #                 pending_assignments.append({
-        #                     'mobile_app_id': message.mobile_app_id.id,
-        #                     'mobile_app_name': message.mobile_app_id.name,  # Assuming name field exists
-        #                     'employee_id': message.employee_id.id,
-        #                     'employee_name': message.employee_id.name,
-        #                     'department_id': message.department_id.id if message.department_id else False,
-        #                     'department_name': message.department_id.name if message.department_id else False,
-        #                     'tracking_id': message.id
-        #                 })
-        #
-        #             # Prepare response
-        #             response_data = {
-        #                 **response_base,
-        #                 'status': 'success',
-        #                 'client_id': client_id,
-        #                 'message': 'Client registered successfully',
-        #                 'pending_assignments': pending_assignments
-        #             }
-        #
-        #     return response_data
-        # if action == 'register':
-        #     # Validate required fields
-        #     if 'name' not in data:
-        #         raise ValueError("Name is required for registration")
-        #     if 'sender_id' not in data:
-        #         raise ValueError("sender_id is required for registration")
-        #     if 'client_id' not in data:
-        #         data['client_id'] = str(uuid.uuid4())  # Generate new client_id if not provided
-        #
-        #     # Get or create client info
-        #     if client_id not in client_manager.client_info:
-        #         client_manager.client_info[client_id] = {}
-        #
-        #     # Update client information
-        #     client_manager.client_info[client_id].update({
-        #         'name': data['name'],
-        #         'sender_id': data['sender_id'],
-        #         'client_id': data['client_id'],
-        #         'last_activity': fields.Datetime.now()
-        #     })
-        #
-        #     # Update database record
-        #     if client_manager.registry:
-        #         with client_manager.registry.cursor() as cr:
-        #             env = Environment(cr, odoo.SUPERUSER_ID, {})
-        #
-        #             # Handle websocket client record
-        #             client = env['websocket.clients'].search([('client_id', '=', client_id)], limit=1)
-        #             if client:
-        #                 client.write({
-        #                     'name': data['name'],
-        #                     'sender_id': data['sender_id'],
-        #                     'is_active': True,
-        #                     'last_activity': fields.Datetime.now()
-        #                 })
-        #             else:
-        #                 env['websocket.clients'].create({
-        #                     'client_id': client_id,
-        #                     'name': data['name'],
-        #                     'sender_id': data['sender_id'],
-        #                     'is_active': True,
-        #                     'connected_at': fields.Datetime.now(),
-        #                     'last_activity': fields.Datetime.now()
-        #                 })
-        #
-        #             # Search for pending tracking.send records with related data
-        #             pending_messages = env['tracking.send'].search([
-        #                 ('sender_id', '=', data['sender_id']),
-        #                 ('is_send', '=', False)
-        #             ])
-        #
-        #             # Prepare pending assignments data
-        #             pending_assignments = []
-        #             mobile_apps_to_notify = set()  # Track unique mobile apps that need notification
-        #
-        #             for message in pending_messages:
-        #                 pending_assignments.append({
-        #                     'mobile_app_id': message.mobile_app_id.id,
-        #                     'mobile_app_name': message.mobile_app_id.name,
-        #                     'employee_id': message.employee_id.id,
-        #                     'employee_name': message.employee_id.name,
-        #                     'department_id': message.department_id.id if message.department_id else False,
-        #                     'department_name': message.department_id.name if message.department_id else False,
-        #                     'tracking_id': message.id
-        #                 })
-        #                 mobile_apps_to_notify.add(message.mobile_app_id.id)
-        #
-        #             # Find all active clients with the same sender_id
-        #             same_sender_clients = env['websocket.clients'].search([
-        #                 ('sender_id', '=', data['sender_id']),
-        #                 ('is_active', '=', True),
-        #                 ('client_id', '!=', client_id)  # Exclude the current client
-        #             ])
-        #
-        #             # Trigger websocket notification for each relevant mobile app
-        #             notification_results = []
-        #             for app_id in mobile_apps_to_notify:
-        #                 mobile_app = env['mobile_app'].browse(app_id)
-        #                 try:
-        #                     # Send to the current client
-        #                     current_result = mobile_app.action_send_via_websocket(client_id=client_id)
-        #
-        #                     # Send to other clients with the same sender_id
-        #                     other_results = []
-        #                     for other_client in same_sender_clients:
-        #                         try:
-        #                             result = mobile_app.action_send_via_websocket(client_id=other_client.client_id)
-        #                             other_results.append({
-        #                                 'client_id': other_client.client_id,
-        #                                 'status': 'success',
-        #                                 'result': result
-        #                             })
-        #                         except Exception as e:
-        #                             other_results.append({
-        #                                 'client_id': other_client.client_id,
-        #                                 'status': 'error',
-        #                                 'error': str(e)
-        #                             })
-        #
-        #                     notification_results.append({
-        #                         'mobile_app_id': app_id,
-        #                         'current_client_status': 'success',
-        #                         'current_client_result': current_result,
-        #                         'other_clients': other_results
-        #                     })
-        #                 except Exception as e:
-        #                     notification_results.append({
-        #                         'mobile_app_id': app_id,
-        #                         'status': 'error',
-        #                         'error': str(e)
-        #                     })
-        #
-        #             # Prepare response
-        #             response_data = {
-        #                 **response_base,
-        #                 'status': 'success',
-        #                 'client_id': client_id,
-        #                 'message': 'Client registered successfully',
-        #                 'pending_assignments': pending_assignments,
-        #                 'notifications_sent': {
-        #                     'total_mobile_apps': len(mobile_apps_to_notify),
-        #                     'total_clients_notified': 1 + len(same_sender_clients),
-        #                     'current_client': {
-        #                         'status': 'success',
-        #                         'client_id': client_id
-        #                     },
-        #                     'other_clients': [{
-        #                         'client_id': client.client_id,
-        #                         'name': client.name
-        #                     } for client in same_sender_clients],
-        #                     'notification_details': notification_results
-        #                 }
-        #             }
-        #
-        #     return response_data
         if action == 'register':
-            # [Previous validation and client setup code remains the same...]
+
 
             with client_manager.registry.cursor() as cr:
                 env = Environment(cr, odoo.SUPERUSER_ID, {})
-
-                # [Previous client registration code remains the same...]
-
                 # Search for pending tracking.send records
                 pending_messages = env['tracking.send'].search([
                     ('sender_id', '=', data['sender_id']),
@@ -816,12 +556,24 @@ async def handler(websocket, path=None):
 
             with registry.cursor() as cr:
                 env = Environment(cr, odoo.SUPERUSER_ID, {})
+                sender_id = msg_data['sender_id']
+
+
+                employee = env['hr.employee'].search([
+                    ('sender_id', '=', sender_id)
+                ], limit=1)
+
+                if not employee:
+                    raise ValueError(
+                        f"No employee found with sender code {sender_id}")
+
                 client = env['websocket.clients'].search([
                     ('client_id', '=', client_id)
                 ], limit=1)
 
                 vals = {
                     'sender_id': msg_data['sender_id'],
+                    'employee_id': employee.id,
                     'is_active': True,
                     'last_activity': fields.Datetime.now()
                 }

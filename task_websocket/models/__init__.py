@@ -3,7 +3,18 @@
 from . import models
 from . import websocket_server
 
-def _start_websocket_server(cr, registry):
-    """Start the websocket server when module is loaded"""
-    env = api.Environment(cr, SUPERUSER_ID, {})
-    env['websocket.server'].start_server()
+from odoo import api, SUPERUSER_ID
+
+def start_websocket_server(cr, registry):
+    try:
+        env = api.Environment(cr, SUPERUSER_ID, {})
+        if 'websocket.server' in env:
+            servers = env['websocket.server'].search([])
+            if servers:
+                servers.start_server()
+    except Exception as e:
+        _logger.error("Failed to start WebSocket server: %s", e)
+        raise
+def post_init_hook(cr, registry):
+    """Called after module installation"""
+    start_websocket_server(cr, registry)

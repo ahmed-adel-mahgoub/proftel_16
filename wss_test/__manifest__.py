@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "wss_test",
+    'name': "Instant Clients",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','check_attendance'],
+    'depends': ['base','check_attendance','hr'],
 
     # always loaded
     'data': [

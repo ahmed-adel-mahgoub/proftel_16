@@ -24,12 +24,14 @@ class Task(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         tasks = super().create(vals_list)
-        # Notify websocket server about new tasks
-        self.env['websocket.server'].notify_new_tasks(tasks)
+        for task in tasks:
+            self.env['websocket.server'].notify_task_update(task, 'create')
         return tasks
 
     def write(self, vals):
         res = super().write(vals)
-        if 'member_ids' in vals:
-            self.env['websocket.server'].notify_updated_tasks(self)
+        if any(field in vals for field in
+               ['name', 'description', 'stage_id', 'member_ids']):
+            for task in self:
+                self.env['websocket.server'].notify_task_update(task, 'update')
         return res

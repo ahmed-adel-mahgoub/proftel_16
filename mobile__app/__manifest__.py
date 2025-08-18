@@ -40,10 +40,9 @@
         'views/task_history_veiw.xml',
         'views/cancel_reason_wizard_views.xml',
         'views/tracking_send_views.xml',
-
-
-
-
+        'views/kind_view.xml',
+        'views/company_type_view.xml',
+        'views/reschadul_type.xml',
     ],
 
 }

@@ -50,11 +50,52 @@ class WebSocketServer:
             data = json.loads(message)
             if data.get('action') == 'register':
                 return await self.handle_registration(data)
+            elif data.get('action') == 'create_project':
+                return await self.handle_project_creation(data)
+            elif data.get('action') == 'create_task':
+                return await self.handle_task_creation(data)
             return {"status": "error", "message": "Invalid action"}
         except json.JSONDecodeError:
             return {"status": "error", "message": "Invalid JSON"}
         except Exception as e:
             return {"status": "error", "message": str(e)}
+
+    async def handle_project_creation(self, data):
+        """Handle project creation message"""
+        with self.registry.cursor() as cr:
+            env = api.Environment(cr, SUPERUSER_ID, {})
+            project = env['project.project'].create({
+                'name': data.get('name'),
+                'description': data.get('description', ''),
+            })
+            return {
+                "status": "success",
+                "project_id": project.id,
+                "message": "Project created successfully"
+            }
+
+    async def handle_task_creation(self, data):
+        """Handle task creation message"""
+        with self.registry.cursor() as cr:
+            env = api.Environment(cr, SUPERUSER_ID, {})
+
+            # Get employee IDs from sender_ids
+            sender_ids = data.get('assignees', [])
+            employees = env['hr.employee'].search(
+                [('sender_id', 'in', sender_ids)])
+
+            task = env['project.task'].create({
+                'name': data.get('name'),
+                'description': data.get('description', ''),
+                'project_id': data.get('project_id'),
+                'member_ids': [(6, 0, employees.ids)],
+            })
+
+            return {
+                "status": "success",
+                "task_id": task.id,
+                "message": "Task created and assigned successfully"
+            }
 
     async def handle_registration(self, data):
         """Handle registration message"""

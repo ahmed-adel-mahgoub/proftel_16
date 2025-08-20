@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr'],
+    'depends': ['base', 'hr'],
 
     # always loaded
     'data': [
@@ -31,10 +31,12 @@
         'views/module_rules.xml',
         'views/templates.xml',
         'views/employee_rules_views.xml',
+        'views/company_subscription_views.xml',
+        'data/cron_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
-'post_init_hook': 'post_init_hook',
+    'post_init_hook': 'post_init_hook',
 }

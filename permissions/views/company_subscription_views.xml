@@ -1,0 +1,56 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_company_subscription_tree" model="ir.ui.view">
+        <field name="name">company.subscription.tree</field>
+        <field name="model">company.subscription</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="company_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="is_active" widget="boolean_button"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_company_subscription_form" model="ir.ui.view">
+        <field name="name">company.subscription.form</field>
+        <field name="model">company.subscription</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+
+                        <group>
+                            <field name="company_id"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="is_active" readonly="1"/>
+
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_company_subscription" model="ir.actions.act_window">
+        <field name="name">Company Subscriptions</field>
+        <field name="res_model">company.subscription</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu Item under Companies -->
+    <menuitem id="menu_company_subscription"
+            name="Subscriptions"
+            parent="menu_permissions_root"
+            action="action_company_subscription"
+            sequence="110"/>
+</odoo>

@@ -1,20 +1,5 @@
 <odoo>
-    <!-- Action to auto load data -->
-    <record id="action_employee_rules_auto_load" model="ir.actions.act_window">
-        <field name="name">Employee Rules Summary</field>
-        <field name="res_model">employee.rules.summary</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_employee_rules_tree"/>
-        <field name="target">current</field>
-        <field name="context">{'create': False}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Employee rules data will load automatically
-            </p>
-        </field>
-    </record>
 
-    <!-- Tree View -->
     <record id="view_employee_rules_tree" model="ir.ui.view">
         <field name="name">employee.rules.summary.tree</field>
         <field name="model">employee.rules.summary</field>
@@ -28,7 +13,7 @@
         </field>
     </record>
 
-    <!-- Form View -->
+
     <record id="view_employee_rules_form" model="ir.ui.view">
         <field name="name">employee.rules.summary.form</field>
         <field name="model">employee.rules.summary</field>
@@ -49,15 +34,24 @@
                             <field name="rule_ids" widget="many2many_tags" readonly="1"/>
                         </group>
                     </group>
-                    <footer>
-                        <button name="load_data"
-                                string="Refresh Data"
-                                type="object"
-                                class="oe_highlight"
-                                icon="fa-refresh"/>
-                    </footer>
+
                 </sheet>
             </form>
+        </field>
+    </record>
+
+
+    <record id="action_employee_rules_auto_load" model="ir.actions.act_window">
+        <field name="name">Employee Rules Summary</field>
+        <field name="res_model">employee.rules.summary</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_employee_rules_tree"/>
+        <field name="target">current</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Employee rules data will load automatically
+            </p>
         </field>
     </record>
 

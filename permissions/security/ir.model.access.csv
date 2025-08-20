@@ -4,3 +4,4 @@ access_rules,rules,model_rules,base.group_user,1,1,1,1
 access_user_rules,user_rules,model_user_rules,base.group_user,1,1,1,1
 access_modules_rules,modules_rules,model_modules_rules,base.group_user,1,1,1,1
 access_employee_rules_summary,employee_rules_summary,model_employee_rules_summary,base.group_user,1,1,1,1
+access_company_subscription,company_subscription,model_company_subscription,base.group_user,1,1,1,1

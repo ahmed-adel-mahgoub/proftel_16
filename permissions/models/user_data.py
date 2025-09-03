@@ -32,6 +32,9 @@ class UserData(models.Model):
                                ],tracking=True,
                               )
     password = fields.Char()
+    company_schedule_id = fields.Many2one(
+        'company.schedule'
+    )
     @api.model
     def create(self, vals):
         # Get company_id from vals or from related employee

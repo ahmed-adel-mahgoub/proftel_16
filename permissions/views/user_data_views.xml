@@ -27,6 +27,7 @@
                             <field name="password" password="True"/>
                             <field name="create_uid"/>
                             <field name="create_date"/>
+                            <field name="company_schedule_id"/>
 
                         </group>
                         <group>

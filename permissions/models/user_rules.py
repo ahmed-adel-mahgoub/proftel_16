@@ -39,6 +39,9 @@ class user_rules(models.Model):
         'modules.rules',
     store = True
     )
+    wan_ip_id = fields.Many2one(
+        'wan.ip'
+    )
 
     def action_sync_to_summary(self):
         """Sync data to employee rules summary"""

@@ -1,0 +1,36 @@
+<odoo>
+    <record id="view_wan_ip_form" model="ir.ui.view">
+        <field name="name">wan_ip_form</field>
+        <field name="model">wan.ip</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+<!--    <record id="action_wan.ip" model="ir.actions.act_window">-->
+<!--        <field name="name">App Management</field>-->
+<!--        <field name="res_model">wan.ip</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_smiling_face">-->
+<!--                Create new wan.ip-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; Menu Item under HR &ndash;&gt;-->
+<!--    <menuitem-->
+<!--            id="menu_wan.ip_root"-->
+<!--            name="App Management"-->
+<!--            parent="mobile__app.mobile_app_root_menu"-->
+<!--            action="action_wan.ip"-->
+<!--            sequence="130"-->
+<!--    />-->
+</odoo>

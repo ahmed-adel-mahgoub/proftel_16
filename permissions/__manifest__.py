@@ -33,6 +33,7 @@
         'views/company_subscription_views.xml',
         'views/company_manger_view.xml',
         'views/user_data_views.xml',
+        'views/company_schadule.xml',
         'data/cron_data.xml',
 
     ],

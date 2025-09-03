@@ -19,27 +19,29 @@
                     <group string="Admins" attrs="{'invisible': [('department_ids', '=', False)]}">
                         <field name="employee_ids"
                                 widget="many2many_tags"
-                                domain="[('department_id', 'in', department_ids)]"/>
+                                domain="[('department_id', 'in', department_ids)]"
+                                context="{'tree_view_ref': 'hr.view_employee_tree', 'search_default_department_id': 1}"
+                        />
+                    </group>
+                    <group string="Employee Details" attrs="{'invisible': [('employee_ids', '=', False)]}">
+                        <div class="alert alert-info" role="alert">
+                            <strong>Selected Employees and Their Departments:</strong>
+                        </div>
+                        <field name="employee_details" widget="html" nolabel="1"/>
                     </group>
 
-                    <group string="Models">
-                        <field name="modules_ids"
-                                widget="many2many_tags"
-                               />
-                    </group>
 
-                   
                 </sheet>
             </form>
         </field>
     </record>
     <record id="action_modules_rules" model="ir.actions.act_window">
-        <field name="name">modules_rules</field>
+        <field name="name">App Module</field>
         <field name="res_model">modules.rules</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create new modules_rules
+                Create new App Module
             </p>
         </field>
     </record>

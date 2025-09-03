@@ -171,6 +171,7 @@
                 <field name="cancel_date" optional="1"/>
                 <field name="description" optional="1"/>
                 <field name="description"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="is_task_location" optional="1"/>
                 <field name="is_task_zone" optional="1"/>
                 <field name="status" optional="1"/>
@@ -197,8 +198,8 @@
     </record>
     <menuitem
             id="task_menu_item"
-            name="Task"
-            parent="mobile_app_root_menu"
+            name="Tasks"
+            parent="mobile_app_root_menu_tab"
             action="task_action"
     />
 </odoo>

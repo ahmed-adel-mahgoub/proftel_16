@@ -1,0 +1,57 @@
+<odoo>
+    <record id="view_radius_entry_form" model="ir.ui.view">
+        <field name="name">radius.entry.form</field>
+        <field name="model">radius.entry</field>
+        <field name="arch" type="xml">
+            <form string="RADIUS Entry">
+                <header>
+                    <button name="action_push_to_radius" type="object" string="Push to RADIUS" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="project_id"/>
+                        <field name="event_id"/>
+                    </group>
+                    <group>
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="radius_username"/>
+                        <field name="radius_password" password="True"/>
+                    </group>
+                    <group>
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_radius_entry_tree" model="ir.ui.view">
+        <field name="name">radius.entry.tree</field>
+        <field name="model">radius.entry</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="radius_username"/>
+                <field name="company_id"/>
+                <field name="project_id"/>
+                <field name="event_id"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_radius_entry" model="ir.actions.act_window">
+        <field name="name">RADIUS Entries</field>
+        <field name="res_model">radius.entry</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- menu root and users menu -->
+    <menuitem id="menu_radius_root" name="RADIUS Manager" sequence="10"/>
+    <menuitem id="menu_radius_users" name="Users" parent="menu_radius_root" action="action_radius_entry" sequence="20"/>
+</odoo>

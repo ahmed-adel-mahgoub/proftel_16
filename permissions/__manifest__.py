@@ -29,14 +29,16 @@
         'views/rules.xml',
         'views/user_ules.xml',
         'views/module_rules.xml',
-        'views/templates.xml',
         'views/employee_rules_views.xml',
         'views/company_subscription_views.xml',
+        'views/company_manger_view.xml',
+        'views/user_data_views.xml',
         'data/cron_data.xml',
+
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
-    'post_init_hook': 'post_init_hook',
+
 }

@@ -1,0 +1,176 @@
+
+<odoo>
+    <menuitem id="menu_radius_root" name="RADIUS Manager" sequence="10"/>
+    <menuitem id="menu_radius_config" name="Configuration" parent="menu_radius_root" sequence="1"/>
+    <menuitem id="menu_radius_ops" name="Operations" parent="menu_radius_root" sequence="2"/>
+
+    <record id="view_radius_server_tree" model="ir.ui.view">
+        <field name="name">radius.server.tree</field>
+        <field name="model">radius.server</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/><field name="host"/><field name="pg_db"/><field name="connection_ok"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_radius_server_form" model="ir.ui.view">
+        <field name="name">radius.server.form</field>
+        <field name="model">radius.server</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_start" type="object" string="Start" class="oe_highlight"/>
+                    <button name="action_restart" type="object" string="Restart"/>
+                    <button name="action_stop" type="object" string="Stop"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="host"/>
+                            <field name="api_type"/>
+                            <field name="systemd_service"/>
+                            <field name="allow_systemctl"/>
+                        </group>
+                        <group string="PostgreSQL (radius)">
+                            <field name="pg_host"/><field name="pg_port"/>
+                            <field name="pg_db"/><field name="pg_user"/><field name="pg_password" password="True"/>
+                            <field name="pg_sslmode"/>
+                            <field name="connection_ok" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes"><field name="notes"/></page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_radius_server" model="ir.actions.act_window">
+        <field name="name">Servers</field>
+        <field name="res_model">radius.server</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_radius_server" name="Servers" parent="menu_radius_config" action="action_radius_server"/>
+
+    <record id="view_radius_company_tree" model="ir.ui.view">
+        <field name="name">radius.company.tree</field>
+        <field name="model">radius.company</field>
+        <field name="arch" type="xml">
+            <tree><field name="name"/><field name="res_company_id"/></tree>
+        </field>
+    </record>
+    <record id="view_radius_company_form" model="ir.ui.view">
+        <field name="name">radius.company.form</field>
+        <field name="model">radius.company</field>
+        <field name="arch" type="xml">
+            <form><sheet><group>
+                <field name="name"/><field name="res_company_id"/><field name="notes"/>
+            </group></sheet></form>
+        </field>
+    </record>
+    <record id="action_radius_company" model="ir.actions.act_window">
+        <field name="name">Companies</field>
+        <field name="res_model">radius.company</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_radius_company" name="Companies" parent="menu_radius_config" action="action_radius_company"/>
+
+    <record id="view_radius_ap_tree" model="ir.ui.view">
+        <field name="name">radius.access.point.tree</field>
+        <field name="model">radius.access.point</field>
+        <field name="arch" type="xml">
+            <tree><field name="name"/><field name="shortname"/><field name="nas_identifier"/><field name="public_ip"/><field name="company_id"/><field name="server_id"/></tree>
+        </field>
+    </record>
+    <record id="view_radius_ap_form" model="ir.ui.view">
+        <field name="name">radius.access.point.form</field>
+        <field name="model">radius.access.point</field>
+        <field name="arch" type="xml">
+            <form><sheet><group>
+                <field name="name"/><field name="shortname"/><field name="nas_identifier"/>
+                <field name="public_ip"/><field name="secret"/><field name="company_id"/><field name="server_id"/>
+            </group></sheet></form>
+        </field>
+    </record>
+    <record id="action_radius_ap" model="ir.actions.act_window">
+        <field name="name">Access Points</field>
+        <field name="res_model">radius.access.point</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_radius_ap" name="Access Points" parent="menu_radius_config" action="action_radius_ap"/>
+
+    <record id="view_radius_cert_tree" model="ir.ui.view">
+        <field name="name">radius.certificate.tree</field>
+        <field name="model">radius.certificate</field>
+        <field name="arch" type="xml">
+            <tree><field name="name"/><field name="cert_type"/><field name="cn"/><field name="valid_to"/><field name="company_id"/><field name="server_id"/></tree>
+        </field>
+    </record>
+    <record id="view_radius_cert_form" model="ir.ui.view">
+        <field name="name">radius.certificate.form</field>
+        <field name="model">radius.certificate</field>
+        <field name="arch" type="xml">
+            <form><sheet><group>
+                <field name="name"/><field name="cert_type"/><field name="cn"/><field name="valid_to"/>
+                <field name="company_id"/><field name="server_id"/>
+                <field name="key_attachment_id"/><field name="cert_attachment_id"/><field name="ca_attachment_id"/>
+            </group></sheet></form>
+        </field>
+    </record>
+    <record id="action_radius_cert" model="ir.actions.act_window">
+        <field name="name">Certificates</field>
+        <field name="res_model">radius.certificate</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_radius_cert" name="Certificates" parent="menu_radius_config" action="action_radius_cert"/>
+
+    <record id="view_radius_event_tree" model="ir.ui.view">
+        <field name="name">radius.event.tree</field>
+        <field name="model">radius.event</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="event_time"/><field name="event_type"/><field name="username"/><field name="company"/><field name="ap"/><field name="details"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_radius_event" model="ir.actions.act_window">
+        <field name="name">Events</field>
+        <field name="res_model">radius.event</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_radius_events" name="Events" parent="menu_radius_ops" action="action_radius_event"/>
+
+    <record id="view_wizard_generate_cert" model="ir.ui.view">
+        <field name="name">wizard.radius.generate.cert.form</field>
+        <field name="model">wizard.radius.generate.cert</field>
+        <field name="arch" type="xml">
+            <form string="Generate Certificate">
+                <group>
+                    <field name="cert_type"/><field name="cn"/><field name="days"/>
+                    <field name="company_id"/><field name="server_id"/>
+                </group>
+                <footer>
+                    <button string="Generate" name="action_generate" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_wizard_generate_cert" model="ir.actions.act_window">
+        <field name="name">Generate Certificate</field>
+        <field name="res_model">wizard.radius.generate.cert</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_wizard_generate_cert" name="Generate Certificate" parent="menu_radius_ops" action="action_wizard_generate_cert"/>
+
+    <record id="action_radius_sync" model="ir.actions.act_window">
+        <field name="name">RADIUS Sync</field>
+        <field name="res_model">radius.sync</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_radius_sync" name="Sync & CoA" parent="menu_radius_ops" action="action_radius_sync"/>
+
+</odoo>

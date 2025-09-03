@@ -1,0 +1,51 @@
+<odoo>
+    <record id="view_radius_request_form" model="ir.ui.view">
+        <field name="name">radius.request.form</field>
+        <field name="model">radius.request</field>
+        <field name="arch" type="xml">
+            <form string="RADIUS Request">
+                <header>
+                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="draft"/>
+                    <button name="action_reject" type="object" string="Reject" states="draft"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="project_id"/>
+                        <field name="event_id"/>
+                    </group>
+                    <group>
+                        <field name="request_type"/>
+                        <field name="requested_by"/>
+                        <field name="date_requested"/>
+                        <field name="state"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_radius_request_tree" model="ir.ui.view">
+        <field name="name">radius.request.tree</field>
+        <field name="model">radius.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="company_id"/>
+                <field name="project_id"/>
+                <field name="event_id"/>
+                <field name="request_type"/>
+                <field name="requested_by"/>
+                <field name="date_requested"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_radius_request" model="ir.actions.act_window">
+        <field name="name">RADIUS Requests</field>
+        <field name="res_model">radius.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_radius_requests" name="Requests" parent="menu_radius_root" action="action_radius_request" sequence="30"/>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="radius_server_form" model="ir.ui.view">
+        <field name="name">radius.server.form</field>
+        <field name="model">radius.server</field>
+        <field name="arch" type="xml">
+            <form>
+<header>
+    <button name="action_systemctl" string="Action Systemctl" type="object"  class="oe_highlight"/>
+</header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="host"/>
+                        <field name="api_type"/>
+                        <field name="systemd_service"/>
+                        <field name="ssh_user"/>
+                        <field name="ssh_port"/>
+                        <field name="ssh_key_path"/>
+                        <field name="allow_systemctl"/>
+                        <field name="pg_host"/>
+                        <field name="pg_db"/>
+                        <field name="pg_user"/>
+                        <field name="connection_ok"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+  <record id="action_radius_server" model="ir.actions.act_window">
+        <field name="name">Radius Server</field>
+        <field name="res_model">radius.server</field>
+        <field name="view_mode">form,tree</field>
+
+    </record>
+
+    <menuitem
+            id="menu_radius_server_root"
+            name=" Radius Server"
+            parent="menu_radius_root"
+            action="action_radius_server"
+            sequence="130"
+    />
+   
+</odoo>

@@ -5,12 +5,15 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <!--                    <div class="oe_button_box" name="button_box">-->
+
+                    <header>
                         <button name="action_sync_to_summary"
                                 string="View Employee Summary"
                                 type="object"
                                 class="oe_highlight"/>
-                    </div>
+                    </header>
+                    <!--                    </div>-->
                     <group>
                         <field name="name"/>
                         <field name="company_ids" widget="many2many_tags"/>

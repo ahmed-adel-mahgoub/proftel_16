@@ -1,0 +1,53 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_company_manger_tree" model="ir.ui.view">
+        <field name="name">company.manger.tree</field>
+        <field name="model">company.manger</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="res_company_id"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="email"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_company_manger_form" model="ir.ui.view">
+        <field name="name">company.manger.form</field>
+        <field name="model">company.manger</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="res_company_id"/>
+                        </group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="department_id"/>
+                            <field name="email"/>
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_company_manger" model="ir.actions.act_window">
+        <field name="name">Company Mangers</field>
+        <field name="res_model">company.manger</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu Item under Companies -->
+    <menuitem id="menu_company_manger"
+            name="Mangers"
+            parent="menu_permissions_root"
+            action="action_company_manger"
+            sequence="112"/>
+</odoo>

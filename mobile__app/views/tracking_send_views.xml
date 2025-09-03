@@ -48,7 +48,7 @@
     <!-- Menu Item -->
     <menuitem id="menu_tracking_send"
               name="Tracking Sends"
-              parent="mobile_app_root_menu"
+              parent="task_menu_item"
               action="action_tracking_send"
               sequence="20"/>
 </odoo>

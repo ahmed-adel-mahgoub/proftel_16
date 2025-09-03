@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="sync_server_form" model="ir.ui.view">
+        <field name="name">radius.sync.form</field>
+        <field name="model">radius.sync</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_sync_radacct" string="Action Sync Radacct" type="object" class="oe_highlight"/>
+                    <button name="send_coa_disconnect" string="send_coa_disconnect" type="object" class="oe_highlight"/>
+                    <button name="action_coa_disconnect_user" string="action_coa_disconnect_user" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sync_server" model="ir.actions.act_window">
+        <field name="name">sync Server</field>
+        <field name="res_model">radius.sync</field>
+        <field name="view_mode">form,tree</field>
+
+    </record>
+
+    <menuitem
+            id="menu_sync_server_root"
+            name=" sync Server"
+            parent="menu_radius_root"
+            action="action_sync_server"
+            sequence="110"
+    />
+
+</odoo>

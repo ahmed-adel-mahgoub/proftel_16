@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="radius_wifi_user_form" model="ir.ui.view">
+        <field name="name">radius.wifi.user.form</field>
+        <field name="model">radius.wifi.user</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="push_batch_to_radius" string="push_batch_to_radius" type="object" class="oe_highlight"/>
+                    <button name="action_delete_from_radius" string="action_delete_from_radius" type="object" class="oe_highlight"/>
+                    <button name="extend_time" string="extend_time" type="object" class="oe_highlight"/>
+                    <button name="action_disconnect_coa" string="action_disconnect_coa" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+
+                        <field name="password"/>
+                        <field name="company_id"/>
+                        <field name="server_id"/>
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                        <field name="pushed"/>
+                        <field name="note"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="radius_wifi_user_server" model="ir.actions.act_window">
+        <field name="name">radius wifi user</field>
+        <field name="res_model">radius.wifi.user</field>
+        <field name="view_mode">form,tree</field>
+
+    </record>
+
+    <menuitem
+            id="menu_sync_server_root"
+            name=" radius wifi user"
+            parent="menu_radius_root"
+            action="radius_wifi_user_server"
+            sequence="160"
+    />
+
+</odoo>

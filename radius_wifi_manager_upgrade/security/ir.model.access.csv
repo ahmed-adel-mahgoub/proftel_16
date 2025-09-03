@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_radius_server,radius_server,model_radius_server,base.group_system,1,1,1,1
+access_radius_entry,radius_entry,model_radius_entry,base.group_system,1,1,1,1
+access_radius_company,radius_company,model_radius_company,base.group_system,1,1,1,1
+access_radius_access_point,radius_access_point,model_radius_access_point,base.group_system,1,1,1,1
+access_radius_certificate,radius_certificate,model_radius_certificate,base.group_system,1,1,1,1
+access_radius_event,radius_event,model_radius_event,base.group_system,1,1,1,1
+access_radius_request,radius_request,model_radius_request,base.group_system,1,1,1,1
+access_radius_sync,radius_sync,model_radius_sync,base.group_system,1,1,1,1
+access_radius_wifi_user,radius_wifi_user,model_radius_wifi_user,base.group_system,1,1,1,1
+

@@ -1,0 +1,59 @@
+<odoo>
+    <record id="view_import_wizard_form" model="ir.ui.view">
+        <field name="name">radius.import.wizard.form</field>
+        <field name="model">radius.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import RADIUS Users from Excel">
+                <group>
+                    <field name="file" filename="filename"/>
+                    <field name="default_start"/>
+                    <field name="default_end"/>
+                </group>
+                <footer>
+                    <button string="Import" type="object" name="action_import" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_random_wizard_form" model="ir.ui.view">
+        <field name="name">radius.random.wizard.form</field>
+        <field name="model">radius.random.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Random Users">
+                <group>
+                    <field name="number"/>
+                    <field name="start_time"/>
+                    <field name="end_time"/>
+                    <field name="company_id"/>
+                    <field name="project_id"/>
+                    <field name="event_id"/>
+                </group>
+                <footer>
+                    <button string="Generate" type="object" name="action_generate" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_radius_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import from Excel</field>
+        <field name="res_model">radius.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_radius_random_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Random Users</field>
+        <field name="res_model">radius.random.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Tools menu -->
+    <menuitem id="menu_radius_tools" name="Tools" parent="menu_radius_root" sequence="40"/>
+    <menuitem id="menu_radius_import" name="Import from Excel" parent="menu_radius_tools" action="action_radius_import_wizard" sequence="10"/>
+    <menuitem id="menu_radius_random" name="Generate Random Users" parent="menu_radius_tools" action="action_radius_random_wizard" sequence="20"/>
+</odoo>

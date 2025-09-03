@@ -1,0 +1,68 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_user_data_tree" model="ir.ui.view">
+        <field name="name">user.data.tree</field>
+        <field name="model">user.data</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id"/>
+                <field name="sender_id"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_user_data_form" model="ir.ui.view">
+        <field name="name">user.data.form</field>
+        <field name="model">user.data</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+
+                        <group>
+                            <field name="name"/>
+                            <field name="app_type" widget="radio" options="{'horizontal': True}"/>
+                            <field name="password" password="True"/>
+                            <field name="create_uid"/>
+                            <field name="create_date"/>
+
+                        </group>
+                        <group>
+                            <field name="android_id"/>
+                            <field name="fcm_token"/>
+                            <field name="platform"/>
+                            <field name="manufacturer"/>
+                            <field name="model"/>
+                            <field name="hms_token"/>
+                            <field name="apns"/>
+                        </group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="sender_id"/>
+                            <field name="department_id"/>
+                            <field name="email"/>
+                            <field name="company_id"/>
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_user_data" model="ir.actions.act_window">
+        <field name="name">User Data</field>
+        <field name="res_model">user.data</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu Item under Companies -->
+    <menuitem id="menu_user_data"
+            name="User Data"
+            parent="menu_permissions_root"
+            action="action_user_data"
+            sequence="113"/>
+</odoo>

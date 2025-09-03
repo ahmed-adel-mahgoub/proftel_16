@@ -15,7 +15,7 @@
         </field>
     </record>
     <record id="action_permissions" model="ir.actions.act_window">
-        <field name="name">Permissions</field>
+        <field name="name">App Management</field>
         <field name="res_model">permissions</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -28,9 +28,9 @@
     <!-- Menu Item under HR -->
     <menuitem
             id="menu_permissions_root"
-            name="Permissions"
-            parent="hr.menu_hr_root"
+            name="App Management"
+            parent="mobile__app.mobile_app_root_menu"
             action="action_permissions"
-            sequence="100"
+            sequence="130"
     />
 </odoo>

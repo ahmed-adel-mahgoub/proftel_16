@@ -1,0 +1,42 @@
+
+<odoo>
+    <record id="view_radius_wifi_user_tree" model="ir.ui.view">
+        <field name="name">radius.wifi.user.tree</field>
+        <field name="model">radius.wifi.user</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/><field name="company_id"/><field name="server_id"/><field name="pushed"/>
+                <field name="start_time"/><field name="end_time"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_radius_wifi_user_form" model="ir.ui.view">
+        <field name="name">radius.wifi.user.form</field>
+        <field name="model">radius.wifi.user</field>
+        <field name="arch" type="xml">
+            <form string="RADIUS WiFi User">
+                <header>
+                    <button name="push_batch_to_radius" type="object" string="Push to RADIUS" class="oe_highlight"/>
+                    <button name="action_delete_from_radius" type="object" string="Delete from RADIUS"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/><field name="password"/><field name="company_id"/><field name="server_id"/>
+                    </group>
+                    <group>
+                        <field name="start_time"/><field name="end_time"/><field name="pushed"/>
+                    </group>
+                    <group>
+                        <field name="note"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_radius_wifi_user" model="ir.actions.act_window">
+        <field name="name">WiFi Users</field>
+        <field name="res_model">radius.wifi.user</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_radius_users" name="WiFi Users" parent="menu_radius_ops" action="action_radius_wifi_user"/>
+</odoo>

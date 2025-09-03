@@ -42,7 +42,7 @@
     <menuitem
             id="task_history_menu_item"
             name="Task History"
-            parent="mobile_app_root_menu"
+            parent="task_menu_item"
             action="task_history_action"
     />
 </odoo>

@@ -1,0 +1,17 @@
+
+-- SQL snippet to adapt FreeRADIUS sql module to map NAS-Identifier to company_id using table radius_ap_company_map.
+-- Place this logic in mods-available/sql under queries that fetch user attributes (e.g., authorize or post-auth queries).
+-- Example: when selecting radcheck/radreply entries for a username, prefer entries that match the company mapped to the NAS-Identifier.
+
+-- Example SELECT for AUTHORIZE stage (psql syntax):
+/*
+SELECT r.* FROM radcheck r
+JOIN radius_ap_company_map m ON r.company_id = m.company_id
+WHERE r.username = '%{User-Name}'
+  AND m.nas_identifier = '%{NAS-Identifier}'
+UNION
+SELECT r2.* FROM radcheck r2
+WHERE r2.username = '%{User-Name}' AND r2.company_id IS NULL;
+*/
+
+-- Alternatively, modify the configuration in /etc/freeradius/3.0/mods-available/sql to include a WHERE clause that joins radius_ap_company_map.

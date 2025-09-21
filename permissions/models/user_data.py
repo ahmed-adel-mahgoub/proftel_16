@@ -11,15 +11,17 @@ class UserData(models.Model):
     name = fields.Char()
     employee_id = fields.Many2one('hr.employee')
     sender_id = fields.Char(related='employee_id.sender_id')
-    department_id = fields.Char(related='employee_id.department_id.name',
-                                string='Department', readonly=True)
-    email = fields.Char(related='employee_id.work_email')
+
     company_id = fields.Many2one(
-        related='employee_id.company_id',
-        string='Company',
-        readonly=True,
-        store=True
+        'res.company',
+        string='company',
     )
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Department',
+    )
+    email = fields.Char(related='employee_id.work_email')
+
     android_id = fields.Char()
     fcm_token = fields.Char()
     platform = fields.Char()
@@ -27,10 +29,8 @@ class UserData(models.Model):
     model = fields.Char()
     hms_token = fields.Char()
     apns = fields.Char()
-    app_type = fields.Selection([('admin','Admin'),
-                               ('user','User'),
-                               ],tracking=True,
-                              )
+    admin = fields.Boolean()
+    user = fields.Boolean()
     password = fields.Char()
     company_schedule_id = fields.Many2one(
         'company.schedule'

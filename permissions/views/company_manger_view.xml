@@ -26,8 +26,8 @@
                             <field name="res_company_id"/>
                         </group>
                         <group>
-                            <field name="employee_id"/>
-                            <field name="department_id"/>
+                            <field name="department_id" domain="[('company_id', '=', res_company_id)]"/>
+                            <field name="employee_id" domain="[('department_id', '=', department_id)]"/>
                             <field name="email"/>
                         </group>
 

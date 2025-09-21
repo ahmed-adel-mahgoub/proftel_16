@@ -20,26 +20,26 @@
                         <field name="wan_ip_id"/>
                     </group>
 
-                    <group string="Departments" attrs="{'invisible': [('company_ids', '=', False)]}">
+                    <group string="Departments" >
                         <field name="department_ids"
                                 widget="many2many_tags"
                                 domain="[('company_id', 'in', company_ids)]"/>
                     </group>
 
-                    <group string="Employees" attrs="{'invisible': [('department_ids', '=', False)]}">
+                    <group string="Employees" >
                         <field name="employee_ids"
                                 widget="many2many_tags"
                                 domain="[('department_id', 'in', department_ids)]"/>
                     </group>
 
-                    <group string="Rules" attrs="{'invisible': [('department_ids', '=', False)]}">
+                    <group string="Rules" >
                         <field name="rules_id"
                                 widget="many2many_tags"
                         />
                     </group>
 
 
-                    <group string="App Module" attrs="{'invisible': [('department_ids', '=', False)]}">
+                    <group string="App Module" >
                         <field name="app_module_id"
                                 widget="many2many_tags"
                         />

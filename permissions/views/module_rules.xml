@@ -10,20 +10,20 @@
                         <field name="company_ids" widget="many2many_tags"/>
                     </group>
 
-                    <group string="Departments" attrs="{'invisible': [('company_ids', '=', False)]}">
+                    <group string="Departments" >
                         <field name="department_ids"
                                 widget="many2many_tags"
                                 domain="[('company_id', 'in', company_ids)]"/>
                     </group>
 
-                    <group string="Admins" attrs="{'invisible': [('department_ids', '=', False)]}">
+                    <group string="Admins" >
                         <field name="employee_ids"
                                 widget="many2many_tags"
                                 domain="[('department_id', 'in', department_ids)]"
                                 context="{'tree_view_ref': 'hr.view_employee_tree', 'search_default_department_id': 1}"
                         />
                     </group>
-                    <group string="Employee Details" attrs="{'invisible': [('employee_ids', '=', False)]}">
+                    <group string="Employee Details" >
                         <div class="alert alert-info" role="alert">
                             <strong>Selected Employees and Their Departments:</strong>
                         </div>

@@ -3,7 +3,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError, ValidationError, Warning
+from odoo.exceptions import UserError, ValidationError
 
 
 class user_rules(models.Model):

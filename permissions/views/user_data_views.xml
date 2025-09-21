@@ -23,7 +23,8 @@
 
                         <group>
                             <field name="name"/>
-                            <field name="app_type" widget="radio" options="{'horizontal': True}"/>
+                            <field name="admin"/>
+                            <field name="user"/>
                             <field name="password" password="True"/>
                             <field name="create_uid"/>
                             <field name="create_date"/>
@@ -40,11 +41,11 @@
                             <field name="apns"/>
                         </group>
                         <group>
-                            <field name="employee_id"/>
-                            <field name="sender_id"/>
-                            <field name="department_id"/>
-                            <field name="email"/>
                             <field name="company_id"/>
+                            <field name="department_id" domain="[('company_id', '=', company_id)]"/>
+                            <field name="employee_id" domain="[('department_id', '=', department_id)]"/>
+                            <field name="sender_id"/>
+                            <field name="email"/>
                         </group>
 
                     </group>

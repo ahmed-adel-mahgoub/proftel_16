@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'hr'],
+    'depends': ['base', 'hr','hr_employee_sender_id','mobile__app'],
 
     # always loaded
     'data': [
@@ -34,6 +34,7 @@
         'views/company_manger_view.xml',
         'views/user_data_views.xml',
         'views/company_schadule.xml',
+        'views/employee_inherit.xml',
         'data/cron_data.xml',
 
     ],

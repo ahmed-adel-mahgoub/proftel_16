@@ -8,15 +8,14 @@ class company_manger(models.Model):
     _description = 'company_manger'
 
     name = fields.Char()
+    employee_id = fields.Many2one('hr.employee',string="Manger")
     res_company_id = fields.Many2one(
-        'res.company'
+        'res.company',
+        string='company',
     )
-    employee_id = fields.Many2one(
-        'hr.employee',
-        string='Manger'
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Department',
     )
-    department_id = fields.Char(related='employee_id.department_id.name',
-                                string='Department'
-                                , readonly=True)
     email = fields.Char(related='employee_id.work_email')
 

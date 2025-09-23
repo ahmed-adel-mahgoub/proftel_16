@@ -11,20 +11,20 @@
 
 
                         <button name="renew_action" type="object" class="oe_highlight" string="renew"
-                                attrs="{'invisible': [('status', 'in', ['done','pending','in_progress'])]}"
+
                         />
 
                         <button name="in_progress_action" type="object" class="oe_highlight" string="strat"
-                                attrs="{'invisible': [('status', 'in', ['done','in_progress'])]}"
+
                         />
                         <button name="done_action" type="object" class="oe_highlight" string="Done"
-                                attrs="{'invisible': [('status', 'in', ['done','cancel'])]}"
+
                         />
                         <!--                        invisible="[('status', '=', 3)]"-->
                         <button name="cancel_action" type="object" class="oe_highlight" string="Cancel"
-                                attrs="{'invisible': [('status', 'in', ['done','cancel'])]}"/>
+                                />
                         <button name="failed_action" type="object" class="oe_highlight" string="failed"
-                                attrs="{'invisible': [('status', 'in', ['done','pending','cancel','failed'])]}"/>
+                                />
 
                         <field name="status" widget="statusbar"/>
                     </header>
@@ -52,10 +52,10 @@
                             <field name="related_task"/>
                             <field name="renew_state" invisible="1"/>
                             <field name="is_task_renew" invisible="1"/>
-                            <field name="renew_reason" attrs="{'invisible': [('renew_state', '!=', 'renew')]}"/>
+                            <field name="renew_reason" />
                             <field name="project_id"/>
                             <field name="is_task_cancel" invisible="1"/>
-                            <field name="reason_cancel" attrs="{'invisible': [('is_task_cancel', '=', False)]}"/>
+                            <field name="reason_cancel" />
                         </group>
                         <group name="right">
                             <field name="is_task_location"/>
@@ -108,7 +108,7 @@
                                 </div>
 
 
-                                <field name="__last_update" string="Last Update on"/>
+<!--                                <field name="__last_update" string="Last Update on"/>-->
                                 <field name="create_date"/>
                                 <field name="alarm_ids" widget="many2many_tags"/>
                                 <field name="coming_time"/>
@@ -121,13 +121,13 @@
                                 <field name="is_task_contact"/>
 
                                 <field name="company_type_id" />
-                                <field name="contact_id" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
-                                <field name="contact_street" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
-                                <field name="contact_street2" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
-                                <field name="contact_city" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
-                                <field name="contact_zip" attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                <field name="contact_id" />
+                                <field name="contact_street" />
+                                <field name="contact_street2" />
+                                <field name="contact_city" />
+                                <field name="contact_zip" />
                                 <field name="contact_child_ids" widget="many2many_tags" string="Address"
-                                       attrs="{'invisible': [('is_task_contact', '=', False)]}"/>
+                                       />
                             </group>
                         </page>
 
@@ -142,21 +142,21 @@
                                         type="object"
                                         string="Send via WebSocket"
                                         class="btn-primary"
-                                        attrs="{'invisible': [('websocket_client_id', '=', False)]}"/>
+                                        />
                             </group>
                         </page>
 
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+<!--                <div class="oe_chatter">-->
 
-                    <field name="activity_id"/>
+<!--                    <field name="activity_id"/>-->
 
-                    <field name="reply_activity_id"/>
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
+<!--                    <field name="reply_activity_id"/>-->
+<!--                    <field name="message_follower_ids"/>-->
+<!--                    <field name="activity_ids"/>-->
+<!--                    <field name="message_ids"/>-->
+<!--                </div>-->
             </form>
         </field>
     </record>

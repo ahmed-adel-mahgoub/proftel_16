@@ -41,12 +41,12 @@
                         <field name="state_manger_out" widget="statusbar"/>
                         <button string="Create Attendance" type="object"
                                 name="create_attendance_record" class="btn-primary"
-                                attrs="{'invisible':[('update', '=', True)]}"
+
                         />
 
                         <button name="action_update_attendance"
                                 type="object" string="Update Attendance" class="btn-primary"
-                                attrs="{'invisible': [('update', '=', False)]}"
+
                         />
 
 
@@ -63,7 +63,7 @@
                         <!--     check_in    -->
                         <label for="check_in"/>
                         <div>
-                            <field name="check_in" class="oe_inline" attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                            <field name="check_in" class="oe_inline" />
                             <span>
                                 <span groups="check_attendance.hr_group_approval">HR</span>
                                 <button name="hr_approval_check_in_action"
@@ -71,13 +71,13 @@
                                         class="fa fa-check"
 
                                         groups="check_attendance.hr_group_approval"
-                                        attrs="{'invisible': [('employee_id', '=', False)]}"
+
 
                                 />
                                 <span></span>
                                 <button name="hr_rejected_check_in_action" type="object" class="fa fa-times"
                                         groups="check_attendance.hr_group_approval,check_attendance.admin_group_approval"
-                                        attrs="{'invisible': [('employee_id', '=', False)]}"
+
                                 />
                                 <span groups="check_attendance.manager_group_approval">manger</span>
                                 <button name="manger_approval_check_in_action"
@@ -85,7 +85,7 @@
 
                                         class="fa fa-check"
                                         groups="check_attendance.manager_group_approval"
-                                        attrs="{'invisible': [('employee_id', '=', False)]}"
+
                                 />
                                 <span></span>
                                 <button
@@ -93,7 +93,7 @@
                                         type="object" class="fa fa-times"
 
                                         groups="check_attendance.manager_group_approval"
-                                        attrs="{'invisible': [('employee_id', '=', False)]}"
+
                                 />
                             </span>
                             <span>
@@ -103,34 +103,34 @@
                         <!--     check_out     -->
                         <label for="check_out"/>
                         <div>
-                            <field name="check_out" class="oe_inline" attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                            <field name="check_out" class="oe_inline" />
                             <span>
                                 <span groups="check_attendance.hr_group_approval">HR</span>
                                 <button name="hr_approval_check_out_action"
                                         type="object"
                                         class="fa fa-check"
                                         groups="check_attendance.hr_group_approval"
-                                        attrs="{'invisible': [('employee_id', '=', False)]}"
+
                                 />
                                 <span></span>
                                 <button name="hr_rejected_check_out_action"
                                         type="object"
                                         class="fa fa-times"
                                         groups="check_attendance.hr_group_approval"
-                                        attrs="{'invisible': [('employee_id', '=', False)]}"
+
                                 />
                                 <span groups="check_attendance.manager_group_approval">manager</span>
                                 <button name="manger_approval_check_out_action"
                                         type="object"
                                         class="fa fa-check"
                                         groups="check_attendance.manager_group_approval"
-                                        attrs="{'invisible': [('employee_id', '=', False)]}"
+
                                 />
                                 <span></span>
                                 <button name="manger_rejected_check_out_action"
                                         type="object" class="fa fa-times"
                                         groups="check_attendance.manager_group_approval"
-                                        attrs="{'invisible': [('employee_id', '=', False)]}"
+
 
                                 />
                             </span>
@@ -182,7 +182,7 @@
     <menuitem
             id="attendance_menu_item"
             name="attendance"
-            parent="mobile__app.mobile_app_root_menu"
+            parent="check_attendance_menu"
             action="check_attendance_action"
             sequence="105"
     />

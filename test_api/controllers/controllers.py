@@ -65,7 +65,9 @@ class testApi(http.Controller):
         if not employee:
             return request.make_response('Employee not found', status=404)
 
-        # Get user details
+        rule_names = employee.user_rules_ids.mapped('name')
+
+
         user_info = {
             'id': employee.id,
             'name': employee.name,
@@ -74,7 +76,9 @@ class testApi(http.Controller):
             'department_id': employee.department_id.id,
             'user_id': employee.user_id.id,
             'work_email': employee.work_email,
-            'sender_id':employee.sender_id
+            'sender_id': employee.sender_id,
+            'user_rules': rule_names,
+
         }
 
         return request.make_response(json.dumps(user_info), headers={'Content-Type': 'application/json'})

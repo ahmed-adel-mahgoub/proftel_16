@@ -13,8 +13,7 @@
                         name="action_send_via_websocket"
                         type="object"
                         string="Send via WebSocket"
-                        class="btn-primary"
-                        attrs="{'invisible': [('websocket_client_id', '=', False)]}"/>
+                        class="btn-primary"/>
                 </group>
             </xpath>
         </field>

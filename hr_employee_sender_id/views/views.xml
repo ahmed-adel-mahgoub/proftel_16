@@ -10,7 +10,7 @@
                         type="object"
                         string="Generate Sender ID"
                         class="oe_highlight"
-                        attrs="{'invisible': [('sender_id', '!=', False)]}"/>
+                        />
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <field name="sender_id" readonly="1"/>

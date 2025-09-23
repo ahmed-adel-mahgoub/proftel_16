@@ -95,7 +95,6 @@ class mobile_app(models.Model):
     websocket_client_id = fields.Many2many(
         'websocket.clients',
         string='WebSocket Clients',
-        domain="[('is_active', '=', True)]"
     )
 
     sender_id = fields.Char(

@@ -23,8 +23,9 @@
                 'mail',
                 'hr',
                 'calendar',
-                'wss_test',
-                'project'
+
+                'project',
+
                 ],
 
     # always loaded

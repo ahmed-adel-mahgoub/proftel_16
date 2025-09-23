@@ -12,6 +12,10 @@
                             string="Fetch Data from API"
                             class="btn-primary"/>
                 </xpath>
+
+                <xpath expr="//field[@name='mobile_phone']" position="after">
+                    <field name="x_app_username"/>
+                </xpath>
             </field>
         </record>
     </data>

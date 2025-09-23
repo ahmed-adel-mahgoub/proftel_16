@@ -17,10 +17,10 @@
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '16.0.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','hr_attendance'],
+    'depends': ['base', 'hr', 'hr_attendance'],
 
     # always loaded
     'data': [
@@ -31,7 +31,8 @@
         'views/emp_inhiret.xml',
 
     ],
-    'application' : True,
+    'installable': True,
+    'application': True,
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

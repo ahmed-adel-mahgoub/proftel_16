@@ -28,45 +28,6 @@ class Apis(http.Controller):
                 "error": error
             }, status=400)
 
-    # @http.route('/v1/api/attendance/get', type='http', auth="public", methods=['GET'], csrf=False)
-    # def get_attendance_email_all(self, **kwargs):
-    #     try:
-    #         # Get all attendance records
-    #         attendances = request.env['hr.attendance'].sudo().search([])
-    #
-    #         if not attendances:
-    #             return request.make_json_response({
-    #                 "message": "No attendance records found",
-    #                 "count": 0,
-    #                 "data": []
-    #             }, status=200)
-    #
-    #         # Prepare response data
-    #         result = []
-    #         for attendance in attendances:
-    #             employee = attendance.employee_id
-    #             result.append({
-    #                 "attendance_id": attendance.id,
-    #                 "employee": {
-    #                     "id": employee.id,
-    #                     "name": employee.name,
-    #                     "work_email": employee.work_email,
-    #                     "department": employee.department_id.name if employee.department_id else None,
-    #
-    #                     }})
-    #
-    #
-    #         return request.make_json_response({
-    #             "message": "Attendance records retrieved successfully",
-    #             "count": len(attendances),
-    #             "data": result
-    #         }, status=200)
-    #
-    #     except Exception as error:
-    #         return request.make_json_response({
-    #             "error": str(error),
-    #             "message": "Failed to retrieve attendance records"
-    #         }, status=400)
     @http.route('/v1/api/attendance/get/all', type='http', auth="public", methods=['GET'], csrf=False)
     def get_attendance_email_all(self, **kwargs):
         try:
@@ -123,3 +84,34 @@ class Apis(http.Controller):
                 "error": str(error),
                 "message": "Failed to retrieve attendance records"
             }, status=400)
+
+    @http.route('/api/modules', type='http', auth='public', methods=['GET'], csrf=False)
+    def get_modules(self, **kwargs):
+        """
+        Get all installed modules
+        """
+        modules = request.env['ir.module.module'].sudo().search([('state', '=', 'installed')])
+        data = [{'name': m.name, 'technical_name': m.name, 'shortdesc': m.shortdesc} for m in modules]
+        return request.make_response(
+            json.dumps(data, indent=4),
+            headers=[('Content-Type', 'application/json')]
+        )
+
+    @http.route('/api/companies', type='http', auth='public', methods=['GET'],
+                csrf=False)
+    def get_companies(self, **kwargs):
+        """
+        Get all companies
+        """
+        companies = request.env['res.company'].sudo().search([])
+        data = [{
+            'id': c.id,
+            'name': c.name,
+            'currency': c.currency_id.name if c.currency_id else None,
+            'partner_id': c.partner_id.id if c.partner_id else None,
+        } for c in companies]
+        return request.make_response(
+            json.dumps(data, indent=4),
+            headers=[('Content-Type', 'application/json')]
+        )
+

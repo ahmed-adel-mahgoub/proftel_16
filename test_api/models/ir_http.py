@@ -4,7 +4,7 @@ from odoo.http import request
 class ApiHttp(models.AbstractModel):
     _inherit = "ir.http"
 
-    # e12b545695b7bd0c8800ea727975235e54253df0
+    # edb130f6ac90a7aab2fcccfb9bcd866b586dd8c9
     @classmethod
     def _auth_method_custom_auth(cls):
         access_token =request.httprequest.headers.get('Authorization')

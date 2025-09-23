@@ -1,0 +1,41 @@
+<!-- views/project_views.xml -->
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_project_form_inherit_inventory" model="ir.ui.view">
+            <field name="name">project.form.inherit.inventory</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <!-- Add smart buttons to the button box -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_products" string="Products" type="object" class="oe_stat_button" icon="fa-cubes">
+                        <field name="product_count" widget="statinfo" string="Products"/>
+                    </button>
+                    <button name="action_view_inventory" string="Inventory" type="object" class="oe_stat_button" icon="fa-tasks"
+                            attrs="{'invisible': [('inventory_location_id', '=', False)]}">
+                        <field name="inventory_count" widget="statinfo" string="Inventory"/>
+                    </button>
+                </xpath>
+
+                <!-- Add inventory and products groups -->
+                <xpath expr="//field[@name='label_tasks']" position="after">
+                    <group string="Inventory">
+                        <field name="inventory_location_id"/>
+                        <field name="inventory_count" widget="statinfo"
+                                string="Inventory Items"
+                                options='{"id": "btn_inventory_count", "type": "object", "action": "action_view_inventory"}'/>
+                    </group>
+                    <group string="Products">
+                        <field name="product_ids" widget="many2many_tags"/>
+                        <field name="product_count" widget="statinfo"
+                                string="Products"
+                                options='{"id": "btn_product_count", "type": "object", "action": "action_view_products"}'/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

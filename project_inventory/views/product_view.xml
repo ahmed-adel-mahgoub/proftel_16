@@ -1,0 +1,32 @@
+<!-- views/product_views.xml -->
+<odoo>
+    <data>
+        <!-- Add project field to product form -->
+        <record id="view_product_form_inherit_project" model="ir.ui.view">
+            <field name="name">product.form.inherit.project</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='sales']" position="after">
+                    <page string="Projects" name="projects">
+                        <group string="Associated Projects">
+                            <field name="project_ids" widget="many2many_tags"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Add project filter to product tree view -->
+        <record id="view_product_tree_inherit_project" model="ir.ui.view">
+            <field name="name">product.tree.inherit.project</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="project_ids" widget="many2many_tags" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

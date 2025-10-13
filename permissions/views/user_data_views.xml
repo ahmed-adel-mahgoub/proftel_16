@@ -19,13 +19,16 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <header>
+                        <button name="action_create_user" string="Action Create User" type="object" class="oe_highlight"/>
+                    </header>
                     <group>
 
                         <group>
                             <field name="name"/>
                             <field name="admin"/>
                             <field name="user"/>
-                            <field name="password" password="True"/>
+                            <!--                            <field name="password" password="True"/>-->
                             <field name="create_uid"/>
                             <field name="create_date"/>
                             <field name="company_schedule_id"/>
@@ -46,6 +49,9 @@
                             <field name="employee_id" domain="[('department_id', '=', department_id)]"/>
                             <field name="sender_id"/>
                             <field name="email"/>
+                            <field name="user_name"/>
+                            <field name="password" attrs="{'invisible': [('has_user_name', '=', True)]}"/>
+                            <field name="has_user_name" invisible="1"/>
                         </group>
 
                     </group>

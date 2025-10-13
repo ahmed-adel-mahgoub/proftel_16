@@ -11,3 +11,4 @@ from . import user_data
 from . import company_schadule
 from . import wan_ip
 from . import employee_inherit
+from . import zones

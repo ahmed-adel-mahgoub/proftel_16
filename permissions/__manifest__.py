@@ -35,6 +35,7 @@
         'views/user_data_views.xml',
         'views/company_schadule.xml',
         'views/employee_inherit.xml',
+        'views/zones.xml',
         'data/cron_data.xml',
 
     ],

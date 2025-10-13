@@ -31,19 +31,55 @@ class UserData(models.Model):
     apns = fields.Char()
     admin = fields.Boolean()
     user = fields.Boolean()
-    password = fields.Char()
     company_schedule_id = fields.Many2one(
         'company.schedule'
     )
+    user_name = fields.Char("User Name")
+    password = fields.Char("Password")
+
+    has_user_name = fields.Boolean(
+        compute='_compute_has_user_name',
+        string='Has User Name'
+    )
+
+    @api.depends('employee_id')
+    def _compute_has_user_name(self):
+        for record in self:
+            if record.employee_id:
+
+                employee_user = self.env['res.users'].search([
+                    ('partner_id', '=', record.employee_id.user_partner_id.id)
+                ], limit=1)
+                record.has_user_name = bool(
+                    employee_user and employee_user.login)
+            else:
+                record.has_user_name = False
+
+    @api.onchange('employee_id')
+    def _onchange_employee_id(self):
+
+        for record in self:
+            if record.employee_id:
+
+                employee_user = self.env['res.users'].search([
+                    ('partner_id', '=', record.employee_id.user_partner_id.id)
+                ], limit=1)
+
+                if employee_user and employee_user.login:
+                    record.user_name = employee_user.login
+
+                else:
+
+                    record.user_name = False
+
     @api.model
     def create(self, vals):
-        # Get company_id from vals or from related employee
+
         company_id = vals.get('company_id')
         if not company_id and vals.get('employee_id'):
             employee = self.env['hr.employee'].browse(vals['employee_id'])
             company_id = employee.company_id.id
             vals['company_id'] = company_id
-
 
         if company_id:
             subscription = self.env['company.subscription'].search([
@@ -57,7 +93,6 @@ class UserData(models.Model):
                 )
 
             if subscription:
-
                 user_count = self.search_count(
                     [('company_id', '=', company_id)])
 
@@ -68,3 +103,32 @@ class UserData(models.Model):
                     )
 
         return super(UserData, self).create(vals)
+
+    def action_create_user(self):
+        for rec in self:
+            if not rec.user_name:
+                raise ValidationError("User name is required.")
+
+            if not rec.has_user_name and not rec.password:
+                raise ValidationError("Password is required for new users.")
+
+            if not rec.has_user_name:
+                existing = self.env['res.users'].search(
+                    [('login', '=', rec.user_name)], limit=1)
+                if existing:
+                    raise ValidationError(
+                        "User with this login already exists.")
+
+            if rec.has_user_name:
+                user = self.env['res.users'].search([
+                    ('login', '=', rec.user_name)
+                ], limit=1)
+                if not user:
+                    raise ValidationError("Existing user not found.")
+            else:
+                user = self.env['res.users'].create({
+                    'name': rec.user_name,
+                    'login': rec.user_name,
+                    'password': rec.password,
+                })
+            return user

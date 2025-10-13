@@ -67,7 +67,6 @@ class testApi(http.Controller):
 
         rule_names = employee.user_rules_ids.mapped('name')
 
-
         user_info = {
             'id': employee.id,
             'name': employee.name,
@@ -77,8 +76,9 @@ class testApi(http.Controller):
             'user_id': employee.user_id.id,
             'work_email': employee.work_email,
             'sender_id': employee.sender_id,
+            'role_admin': employee.role_admin,
+            'role_user': employee.role_user,
             'user_rules': rule_names,
-
         }
 
         return request.make_response(json.dumps(user_info), headers={'Content-Type': 'application/json'})

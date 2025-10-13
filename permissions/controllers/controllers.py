@@ -257,3 +257,122 @@ class RulesController(http.Controller):
                 status=400,
                 mimetype='application/json'
             )
+# =========================================================
+    # GET all zones
+    # =========================================================
+    @http.route('/api/zones/get_all', type='http', auth='public', methods=['GET'], csrf=False)
+    def get_all_zones(self, **kwargs):
+        zones = request.env['zones'].sudo().search([])
+        data = [{
+            'id': z.id,
+            'name': z.name,
+            'description': z.description,
+            'note': z.note,
+            'regions': z.regions,
+            'countries': z.countries,
+            'cities': z.cities,
+            'companies': [{'id': c.id, 'name': c.name} for c in z.company_ids],
+        } for z in zones]
+
+        return http.Response(json.dumps(data), content_type='application/json')
+
+    # =========================================================
+    # GET single zone by ID
+    # =========================================================
+    @http.route('/api/zones/get/<int:zone_id>', type='http', auth='public', methods=['GET'], csrf=False)
+    def get_zone_by_id(self, zone_id, **kwargs):
+        zone = request.env['zones'].sudo().browse(zone_id)
+        if not zone.exists():
+            return http.Response(json.dumps({'error': 'Zone not found'}), status=404, content_type='application/json')
+
+        data = {
+            'id': zone.id,
+            'name': zone.name,
+            'description': zone.description,
+            'note': zone.note,
+            'regions': zone.regions,
+            'countries': zone.countries,
+            'cities': zone.cities,
+            'companies': [{'id': c.id, 'name': c.name} for c in z.company_ids],
+        }
+        return http.Response(json.dumps(data), content_type='application/json')
+
+    # =========================================================
+    # POST - create new zone
+    # =========================================================
+    @http.route('/api/zones/create', type='http', auth='public',
+                methods=['POST'], csrf=False)
+    def create_zone(self, **kwargs):
+        import json
+
+        # Parse JSON body
+        try:
+            data = json.loads(request.httprequest.data)
+        except Exception:
+            return http.Response(
+                json.dumps({'error': 'Invalid JSON format'}),
+                status=400,
+                content_type='application/json'
+            )
+
+        # Validate required fields
+        required_fields = ['name']
+        missing = [f for f in required_fields if f not in data]
+        if missing:
+            return http.Response(
+                json.dumps({'error': f'Missing fields: {", ".join(missing)}'}),
+                status=400,
+                content_type='application/json'
+            )
+
+        # Create record
+        zone = request.env['zones'].sudo().create({
+            'name': data.get('name'),
+            'description': data.get('description'),
+            'note': data.get('note'),
+            'regions': data.get('regions'),
+            'countries': data.get('countries'),
+            'cities': data.get('cities'),
+            'company_ids': [(6, 0, data.get('company_ids', []))],
+            'polygon_points': data.get('polygon_points'),
+        })
+
+        # Return JSON response
+        return http.Response(
+            json.dumps({'success': True, 'id': zone.id}),
+            status=200,
+            content_type='application/json'
+        )
+
+    # =========================================================
+    # PUT - update existing zone
+    # =========================================================
+    @http.route('/api/zones/update/<int:zone_id>', type='json', auth='public', methods=['PUT'], csrf=False)
+    def update_zone(self, zone_id, **post):
+        zone = request.env['zones'].sudo().browse(zone_id)
+        if not zone.exists():
+            return {'error': 'Zone not found'}
+
+        zone.sudo().write({
+            'name': post.get('name', zone.name),
+            'description': post.get('description', zone.description),
+            'note': post.get('note', zone.note),
+            'regions': post.get('regions', zone.regions),
+            'countries': post.get('countries', zone.countries),
+            'cities': post.get('cities', zone.cities),
+            'company_ids': [(6, 0, post.get('company_ids', [c.id for c in zone.company_ids]))],
+        })
+
+        return {'success': True, 'id': zone.id}
+
+    # =========================================================
+    # DELETE - remove zone by ID
+    # =========================================================
+    @http.route('/api/zones/delete/<int:zone_id>', type='http', auth='public', methods=['DELETE'], csrf=False)
+    def delete_zone(self, zone_id):
+        zone = request.env['zones'].sudo().browse(zone_id)
+        if not zone.exists():
+            return http.Response(json.dumps({'error': 'Zone not found'}), status=404, content_type='application/json')
+
+        zone.sudo().unlink()
+        return http.Response(json.dumps({'success': True}), content_type='application/json')

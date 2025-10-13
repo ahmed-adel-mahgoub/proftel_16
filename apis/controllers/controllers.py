@@ -8,11 +8,16 @@ from odoo.http import request
 import logging
 
 _logger = logging.getLogger(__name__)
+
+
 class Apis(http.Controller):
-    @http.route('/v1/api/attendance/get/email/<string:work_email>', type='http', auth="public", methods=['GET'], csrf=False)
-    def get_attendance_email(self,work_email):
+
+    @http.route('/v1/api/attendance/get/email/<string:work_email>', type='http',
+                auth="public", methods=['GET'], csrf=False)
+    def get_attendance_email(self, work_email):
         try:
-            users = request.env['hr.attendance'].sudo().search([('email', '=', work_email)])
+            users = request.env['hr.attendance'].sudo().search(
+                [('email', '=', work_email)])
             if not users:
                 return request.make_json_response({
                     "error": "table is empty",
@@ -28,7 +33,8 @@ class Apis(http.Controller):
                 "error": error
             }, status=400)
 
-    @http.route('/v1/api/attendance/get/all', type='http', auth="public", methods=['GET'], csrf=False)
+    @http.route('/v1/api/attendance/get/all', type='http', auth="public",
+                methods=['GET'], csrf=False)
     def get_attendance_email_all(self, **kwargs):
         try:
             # Get all attendance records
@@ -85,13 +91,17 @@ class Apis(http.Controller):
                 "message": "Failed to retrieve attendance records"
             }, status=400)
 
-    @http.route('/api/modules', type='http', auth='public', methods=['GET'], csrf=False)
+    @http.route('/api/modules', type='http', auth='public', methods=['GET'],
+                csrf=False)
     def get_modules(self, **kwargs):
         """
         Get all installed modules
         """
-        modules = request.env['ir.module.module'].sudo().search([('state', '=', 'installed')])
-        data = [{'name': m.name, 'technical_name': m.name, 'shortdesc': m.shortdesc} for m in modules]
+        modules = request.env['ir.module.module'].sudo().search(
+            [('state', '=', 'installed')])
+        data = [
+            {'name': m.name, 'technical_name': m.name, 'shortdesc': m.shortdesc}
+            for m in modules]
         return request.make_response(
             json.dumps(data, indent=4),
             headers=[('Content-Type', 'application/json')]
@@ -115,3 +125,75 @@ class Apis(http.Controller):
             headers=[('Content-Type', 'application/json')]
         )
 
+    # @http.route('/api/get_partner/<string:number>', type='http', auth='public',
+    #             methods=['GET'], csrf=False)
+    # def get_partner_by_number(self, number, **kwargs):
+    #     """
+    #     Search partner by either phone or mobile number.
+    #     Example: /api/get_partner/01012345678
+    #     """
+    #     if not number:
+    #         return request.make_json_response({'error': 'Number is required.'},
+    #                                           status=400)
+    #
+    #     # Search partner by phone OR mobile
+    #     partner = request.env['res.partner'].sudo().search([
+    #         '|', ('phone', '=', number), ('mobile', '=', number)
+    #     ], limit=1)
+    #
+    #     if partner:
+    #         data = {
+    #             'partner_id': partner.id,
+    #             'partner_name': partner.name,
+    #             'phone': partner.phone,
+    #             'mobile': partner.mobile,
+    #         }
+    #         return request.make_json_response(data)
+    #     else:
+    #         return request.make_json_response({'error': 'Partner not found.'},
+    #                                           status=404)
+
+    @http.route('/api/get_partner/<string:number>', type='http',
+                auth='public', methods=['GET'], csrf=False)
+    def get_partner_by_number(self, number, **kwargs):
+        """
+        Returns Cisco IP Phone Directory XML with partner name & phone number.
+        Example: /api/get_partner/01012345678
+        """
+        if not number:
+            xml_response = """<?xml version="1.0" encoding="UTF-8"?>
+            <CiscoIPPhoneText>
+                <Title>Error</Title>
+                <Prompt>Missing number</Prompt>
+                <Text>Number is required.</Text>
+            </CiscoIPPhoneText>"""
+            return request.make_response(xml_response, headers=[
+                ('Content-Type', 'text/xml')])
+
+        # Search by phone or mobile
+        partner = request.env['res.partner'].sudo().search([
+            '|', ('phone', '=', number), ('mobile', '=', number)
+        ], limit=1)
+
+        if partner:
+            # if found
+            xml_response = f"""<?xml version="1.0" encoding="UTF-8"?>
+            <CiscoIPPhoneDirectory>
+              <Title>My Corporate Directory</Title>
+              <Prompt>Select a contact to dial</Prompt>
+              <DirectoryEntry>
+                <Name>{partner.name}</Name>
+                <Telephone>{partner.mobile or partner.phone or ''}</Telephone>
+              </DirectoryEntry>
+            </CiscoIPPhoneDirectory>"""
+        else:
+            # not found
+            xml_response = """<?xml version="1.0" encoding="UTF-8"?>
+            <CiscoIPPhoneText>
+              <Title>Not Found</Title>
+              <Prompt>No contact found</Prompt>
+              <Text>Partner not found for this number.</Text>
+            </CiscoIPPhoneText>"""
+
+        return request.make_response(xml_response,
+                                     headers=[('Content-Type', 'text/xml')])

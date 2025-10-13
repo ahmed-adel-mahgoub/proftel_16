@@ -5,11 +5,11 @@
             name="Mobile APP"
             sequence="10"
     />
+
     <menuitem
             id="mobile_app_root_menu_tab"
             name="Task"
             parent="mobile_app_root_menu"
-
     />
 
 </odoo>

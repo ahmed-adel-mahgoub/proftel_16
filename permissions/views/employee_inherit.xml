@@ -7,6 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='mobile_phone']" position="after">
                 <field name="user_rules_ids" widget="many2many_tags"/>
+                <field name="role_admin"/>
+                <field name="role_user"/>
             </xpath>
         </field>
     </record>

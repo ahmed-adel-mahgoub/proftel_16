@@ -11,7 +11,8 @@ class HrEmployeeInherit(models.Model):
         store=True,
         readonly=True
     )
-    role = fields.Char()
+    role_admin = fields.Boolean()
+    role_user = fields.Boolean()
 
     @api.depends('department_id', 'company_id')
     def _compute_user_rules_ids(self):

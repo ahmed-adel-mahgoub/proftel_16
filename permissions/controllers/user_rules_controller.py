@@ -282,3 +282,26 @@ class UserRulesEndpoint(http.Controller):
                 'status': 'error',
                 'message': str(e)
             }
+
+    @http.route('/api/create_user', type='json', auth='public', methods=['POST'],
+                csrf=False)
+    def create_user(self, **post):
+        """Public endpoint to create user"""
+        try:
+            data = json.loads(request.httprequest.data.decode())
+            user_name = data.get('user_name')
+            password = data.get('password')
+
+            if not user_name or not password:
+                return {"error": "user_name and password are required."}
+
+            # Call the action
+            record = request.env['user.data'].sudo().create({
+                'user_name': user_name,
+                'password': password,
+            })
+            user = record.sudo().action_create_user()
+
+            return {"success": True, "user_id": user.id, "login": user.login}
+        except Exception as e:
+            return {"error": str(e)}

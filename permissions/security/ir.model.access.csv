@@ -9,3 +9,4 @@ access_company_manger,company_manger,model_company_manger,base.group_user,1,1,1,
 access_user_data,user_data,model_user_data,base.group_user,1,1,1,1
 access_company_schedule,company_schedule,model_company_schedule,base.group_user,1,1,1,1
 access_wan_ip,wan_ip,model_wan_ip,base.group_user,1,1,1,1
+access_zones,zones,model_zones,base.group_user,1,1,1,1
